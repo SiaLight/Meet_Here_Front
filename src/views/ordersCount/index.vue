@@ -1,6 +1,6 @@
 <template>
     <div>
-       我的预约
+        预约订单统计
     </div>
 </template>
 <script>
