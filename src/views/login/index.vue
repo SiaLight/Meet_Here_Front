@@ -6,7 +6,7 @@
                 <span>MeetHere</span>
             </div>
            <div class="inputDiv">
-               <el-input placeholder="请输入名称"  v-model="name">
+               <el-input placeholder="请输入名称"  v-model="userID">
                    <template slot="prepend">名称</template>
                </el-input>
                <el-input placeholder="请输入密码"   v-model="password" class="password" show-password>
@@ -30,7 +30,11 @@
         }),
       methods:{
            loginHandle () {
-               this.$store.commit('LOGIN',{userId:this.userId,identity:1})
+               this.$store.commit('LOGIN',{userId:this.userId,identity:1});
+               if(this.userID === '1')
+                   this.$router.push({name:'index'});
+               else
+                   this.$router.push({name:'AdminIndex'});
           },
           registerHandle(){
 

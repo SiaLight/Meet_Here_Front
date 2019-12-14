@@ -11,26 +11,21 @@
                         <el-col :span="6"><P>管理员</P></el-col>
                     </el-row>
                     <el-divider class="divider"></el-divider>
-                    <el-menu  @select="handleSelect">
-                        <el-menu-item index="1"><i class="el-icon-s-home"></i>用户管理</el-menu-item>
-                        <el-menu-item index="2"><i class="el-icon-s-order"></i>场馆信息管理</el-menu-item>
-                        <el-menu-item index="3"><i class="el-icon-s-grid"></i>预约订单审核</el-menu-item>
-                        <el-menu-item index="4"><i class="el-icon-menu"></i>预约订单统计</el-menu-item>
-                        <el-menu-item index="5"><i class="el-icon-s-unfold"></i>新闻动态审核</el-menu-item>
-                        <el-menu-item index="6"><i class="el-icon-s-finance"></i>留言审核</el-menu-item>
+                    <el-menu   router>
+                        <el-menu-item index="/AdminIndex/userManagement"><i class="el-icon-s-home"></i>用户管理</el-menu-item>
+                        <el-menu-item index="/AdminIndex/stadiumManagement"><i class="el-icon-s-order"></i>场馆信息管理</el-menu-item>
+                        <el-menu-item index="/AdminIndex/checkOrder"><i class="el-icon-s-grid"></i>预约订单审核</el-menu-item>
+                        <el-menu-item index="/AdminIndex/ordersCount"><i class="el-icon-menu"></i>预约订单统计</el-menu-item>
+                        <el-menu-item index="/AdminIndex/checkNews"><i class="el-icon-s-unfold"></i>新闻动态审核</el-menu-item>
+                        <el-menu-item index="/AdminIndex/checkReply"><i class="el-icon-s-finance"></i>留言审核</el-menu-item>
                     </el-menu>
                     <div class="logout">
-                        <el-button type="primary" plain >注销</el-button>
+                        <el-button type="primary" plain  @click="handleLogout">注销</el-button>
                     </div>
 
                 </el-aside>
                 <el-main id="main">
-                   <user-management v-if="path === '1'"></user-management>
-                    <stadium-management v-else-if="path === '2'"></stadium-management>
-                    <check-order v-else-if="path === '3'"></check-order>
-                    <orders-count v-else-if="path === '4'"></orders-count>
-                    <check-news v-else-if="path === '5'"></check-news>
-                    <check-reply v-else></check-reply>
+                    <router-view></router-view>
                 </el-main>
             </el-container>
         </el-container>
@@ -38,34 +33,14 @@
 </template>
 
 <script>
-    import userManagement from '../userManagement'
-    import stadiumManagement from '../stadiumManagement'
-    import  checkNews from '../checkNews'
-    import checkOrder from '../checkOrder'
-    import checkReply from '../checkReply'
-    import ordersCount from '../ordersCount'
     export default {
         name: 'app',
-        data: () =>({
-            path: 0
-        }),
-        components: {
-            userManagement,
-            stadiumManagement,
-            checkReply,
-            checkOrder,
-            checkNews,
-            ordersCount
-        },
         methods:{
-            handleSelect(path){
-
-                this.path = path;
-                // eslint-disable-next-line no-console
-                console.log(path);
+            handleLogout(){
+                this.$store.commit('LOGOUT');
+                this.$router.push({path:'/'});
             }
         }
-
     }
 </script>
 

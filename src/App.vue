@@ -1,35 +1,12 @@
 <template>
   <div id="app" >
-<!--     <login v-if="!logState"></login>-->
-<!--          <index v-else-if="userIdentity"></index>-->
-<!--          <AdministratorIndex v-else></AdministratorIndex>-->
-      <router-link to="/index">登录</router-link>
       <router-view></router-view>
-
  </div>
 </template>
 
 <script>
-     import  login from './views/login'
-     import index from  './views/index'
-     import  AdministratorIndex from './views/Aindex'
-     import { mapState } from 'vuex'
 export default {
   name: 'app',
-    data(){
-      return {
-          appKey: 1,
-      }
-    },
-    components: {login,index, AdministratorIndex},
-    computed: mapState({
-        logState: state => state.loginState,
-        userIdentity: state => state.identity
-    }),
-
-    methods:{
-
-    }
 }
 </script>
 

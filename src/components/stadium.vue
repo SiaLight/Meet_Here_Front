@@ -1,8 +1,6 @@
 <template>
-    <div class="stadiumD">
-        <el-row :gutter="20">
-            <el-col :span="6" v-for="item in stadiumData">
-                <el-card class="box-card" @click="handleStadium">
+    <div class="stadiumD" @click="handleStadium">
+                <el-card class="box-card" >
                     <el-image
                             style="width: 100px; height: 100px"
                             :src="item.url"></el-image>
@@ -11,37 +9,25 @@
                         <P class="address">{{item.address }}</P>
                     </div>
                 </el-card>
-            </el-col>
-
-        </el-row>
     </div>
 </template>
 <script>
     export default {
         data(){
             return{
-                stadiumData:[
-                    {
-                        url: '../assets/logo.png',
-                        name: '热浪健身馆',
-                        address:'中北校区理科大楼'
-                    },
-                    {
-                        url: '../assets/logo.png',
-                        name: '华师健身馆',
-                        address:'中北校区理科大楼'
-                    },
-                    {
-                        url: '../assets/logo.png',
-                        name: '中北健身馆',
-                        address:'中北校区理科大楼'
-                    }
 
-                ]
             }
         },
-        handleStadium(){
+        props:{
+            item:{
+                type: Object
+            }
 
+        },
+        methods:{
+            handleStadium(){
+                this.$router.push({name:'stadiumDetail',params: {id: this.item.id}});
+            }
         }
 
     }
