@@ -6,15 +6,6 @@
             </el-input>
         </div>
         <div class="bookBox">
-        <div class="book1">
-            <p class="shangjia">预定商家</p>
-            <el-radio-group v-model="radio1">
-                <el-radio-button label="场馆1" class="radioD"></el-radio-button>
-                <el-radio-button label="场馆3" class="radioD"></el-radio-button>
-                <el-radio-button label="场馆4" class="radioD"></el-radio-button>
-                <el-radio-button label="场馆5" class="radioD"></el-radio-button>
-            </el-radio-group>
-        </div>
     </div>
         <div class="stadiumDiv" >
             <el-row :gutter="20" >

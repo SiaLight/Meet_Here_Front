@@ -24,7 +24,7 @@
                     </el-input>
                 </el-form-item>
         <el-form-item label="场馆场地">
-            <el-select v-model="stadium.site" multiple placeholder="请选择">
+            <el-select v-model="stadium.stadium" multiple placeholder="请选择">
                 <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -50,7 +50,7 @@
                     name:'',
                     phone: '',
                     address: '',
-                    site:[]
+                    stadium:[]
                 },
                 options:[
                     {

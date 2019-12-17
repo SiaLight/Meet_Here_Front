@@ -92,22 +92,22 @@
                     phone: '153155622',
                     name: '体育馆',
                     address: '上海市普陀区金沙江路 1518 弄',
-                    site: []
+                    stadium: []
                 }, {
                     phone: '153155622',
                     name: '羽毛球馆',
                     address: '上海市普陀区金沙江路 1517 弄',
-                    site: []
+                    stadium: []
                 }, {
                     phone: '153155622',
                     name: '网球馆',
                     address: '上海市普陀区金沙江路 1519 弄',
-                    site: []
+                    stadium: []
                 }, {
                     phone: '153155622',
                     name: '篮球馆',
                     address: '上海市普陀区金沙江路 1516 弄',
-                    site: []
+                    stadium: []
                 }],
                 dialogFormVisible: false
             }

@@ -6,6 +6,9 @@
             <el-form-item label="昵称">
                 <el-input v-model="userInfo.name"></el-input>
             </el-form-item>
+            <el-form-item label="密码">
+                <el-input v-model="userInfo.password"></el-input>
+            </el-form-item>
             <el-form-item label="联系方式">
                 <el-input v-model="userInfo.phone"></el-input>
             </el-form-item>
@@ -23,7 +26,8 @@
         return{
             userInfo:{
                 name:'张同学',
-                phone: '154312.'
+                phone: '154312.',
+                password:''
 
             }
         }
