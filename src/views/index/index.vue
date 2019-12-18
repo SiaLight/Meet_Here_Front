@@ -11,7 +11,7 @@
                         <el-col :span="6"><P>张同学</P></el-col>
                     </el-row>
                     <el-divider class="divider"></el-divider>
-                    <el-menu  router :default-active="$route.path">
+                    <el-menu  router default-active="/index/homePage" >
                         <el-menu-item index="/index/homePage"><i class="el-icon-s-home" ></i>场馆预约</el-menu-item>
                         <el-menu-item index="/index/appointment"><i class="el-icon-s-order"></i>订单管理</el-menu-item>
                         <el-menu-item index="/index/seeNews"><i class="el-icon-s-grid"></i>查看新闻</el-menu-item>
@@ -74,6 +74,7 @@
         width:15%;
         color: #333;
         text-align: left;
+        background-color: white;
     }
 
     #main {

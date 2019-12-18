@@ -66,10 +66,13 @@
                 </el-col>
             </el-row>
         </div>
-
+       <div>
+           <comment-unit :comment="comment"></comment-unit>
+       </div>
     </div>
 </template>
 <script>
+    import  commentUnit from './commentUnit'
     export default {
         data(){
             return {
@@ -109,9 +112,35 @@
                     rent:'',
                     startTime:'',
                     endTime:''
-                }
+                },
+                comment:[{
+                 id:'1',
+                    user_id:'张同学',
+                    site_id:'4',
+                    content:'这个场馆真好',
+                    status:false,
+                    createTime:'2019-12-10'
+                },
+                    {
+                        id:'2',
+                        user_id:'李同学',
+                        site_id:'4',
+                        content:'这个场馆真好',
+                        status:false,
+                        createTime:'2019-12-10'
+                    },
+                    {
+                        id:'3',
+                        user_id:'陈同学',
+                        site_id:'4',
+                        content:'这个场馆不太好',
+                        status:true,
+                        createTime:'2019-12-10'
+                    }
+                ]
             }
         },
+        components:{commentUnit},
      methods:{
          goBack(){
              this.$router.go(-1);

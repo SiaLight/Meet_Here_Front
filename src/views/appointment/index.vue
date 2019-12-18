@@ -149,12 +149,6 @@
         methods:{
            startChange(row){
                console.log(row);
-               // let newTime = new Date(e);
-               //console.log(newTime.getTime());
-           },
-
-           changeRent(){
-               let newStart = x;
            },
             handleEdit(index,row) {
                 console.log(index, row);

@@ -1,28 +1,43 @@
 <template>
     <div  class="login">
     <div class="LoginBoard">
-        <el-card class="box-card">
-            <div slot="header" class="clearfix">
-                <span>MeetHere</span>
-            </div>
            <div class="inputDiv">
-               <el-input placeholder="请输入名称"  v-model="userID">
-                   <template slot="prepend">名称</template>
-               </el-input>
-               <el-input placeholder="请输入密码"   v-model="password" class="password" show-password>
-                   <template slot="prepend">密码</template>
-               </el-input>
+               <el-row :gutter="10">
+                   <el-col :span="8">
+                       <span>名称</span>
+                   </el-col>
+                   <el-col :span="8">
+                       <div class="inputBorder">
+                           <input type="text" v-model="userID"></input>
+                       </div>
+                   </el-col>
+               </el-row>
+               <el-row :gutter="10" style="margin-top: 10px">
+                   <el-col :span="8">
+                       <span>密码</span>
+                   </el-col>
+                   <el-col :span="8">
+                       <div class="inputBorder">
+                       <input type="password" v-model="password"></input>
+                       </div>
+                   </el-col>
+               </el-row>
            </div>
             <div class="buttonDIV">
-                <el-button type="primary" plain @click="loginHandle">登录</el-button>
-                <el-button type="primary" plain @click="registerHandle">注册</el-button>
+                <el-row :gutter="20">
+                    <el-col :span="12">
+                        <el-button type="primary" plain @click="loginHandle">登录</el-button>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-button type="primary" plain @click="registerHandle">注册</el-button>
+                    </el-col>
+                </el-row>
             </div>
-        </el-card>
     </div>
     </div>
 </template>
 <script>
-
+ import  utils from '../../utils'
     export default {
         data: () => ({
             userID:'',
@@ -35,6 +50,18 @@
                    this.$router.push({name:'index'});
                else
                    this.$router.push({name:'AdminIndex'});
+               // utils.request({
+               //     invoke: utils.api.login,
+               //     params:{
+               //     }
+               // }).then(res =>{
+               //     console.log("进入登录验证");
+               //     console.log(res.data);
+               // })
+               //     .catch(res=>{
+               //         console.log("error");
+               //         console.log(res);
+               //     })
           },
           registerHandle(){
 
@@ -49,16 +76,31 @@
         align-items: center;
     }
 .LoginBoard{
-    width:60%;
-
+    width:80%;
+}
+.box-card{
+    opacity:0.2;
 }
     .buttonDIV{
-        margin-top: 10px;
+        margin-top: 20px;
     }
     .password{
         margin-top: 10px
     }
     .inputDiv{
-
+       z-index: 999;
     }
+    .inputDiv input{
+        border:0;
+        background-color:transparent;
+    }
+
+    .inputDiv span{
+        color: #000080;
+    }
+    .inputBorder{
+        border-bottom: 2px solid #1E90FF;
+        width: 130px
+    }
+
 </style>

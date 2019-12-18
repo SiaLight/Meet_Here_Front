@@ -2,14 +2,14 @@
     <div class="home">
         <div style="margin-top: 15px;" class="searchDiv">
             <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
-                <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-button slot="append" icon="el-icon-search" @click="handleChange"></el-button>
             </el-input>
         </div>
         <div class="bookBox">
     </div>
         <div class="stadiumDiv" >
             <el-row :gutter="20" >
-                <el-col :span="6" v-for="item in stadiumData" style="margin-top:10px" :key="item.id">
+                <el-col :span="6" v-for="item in selectStadium" style="margin-top:10px" :key="item.id">
                     <stadium :item = "item"></stadium>
                 </el-col>
             </el-row>
@@ -57,7 +57,27 @@
          ]
      }
  },
- components:{stadium}
+         components:{stadium},
+        methods:{
+            handleChange(){
+
+            }
+        },
+        computed:{
+            selectStadium: function(){
+                if(!this.search){
+                    return this.stadiumData;
+                }
+                let searchString = this.search.trim();
+                let searchArray=[];
+                searchArray = this.stadiumData.filter(function(item){
+                    if(item.name.indexOf(searchString)!== -1){
+                        return item;
+                    }
+                })
+                return searchArray;
+            }
+        }
 
     }
 </script>
@@ -70,21 +90,8 @@
         display: flex;
         flex-direction: column;
     }
- .book1{
-     display: flex;
-     flex-direction:row;
-     float: left;
- }
     .bookBox{
         margin-top:10px;
-    }
-    .shangjia{
-        margin-right: 5px;
-        font-size: 14px;
-        color: #333333;
-    }
-    .radioD{
-        margin-left: 5px;
     }
     .stadiumDiv{
         margin-top:10px;

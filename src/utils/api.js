@@ -83,7 +83,7 @@ export const createOrder = params => {
 *  @param   orderId, auditStatus
 * 审核通过或不通过
 * */
-export const createOrder = params => {
+export const auditOrder = params => {
     return service.post('/order/audit', params)
 }
 /*
@@ -113,7 +113,7 @@ export const siteListOrder = params => {
 *  @param  status,{pageNum,pageSize}
 * 管理员按用户列出订单
 * */
-export const siteListOrder = params => {
+export const siteListOrderByUser = params => {
     return service.post('/order/user/list', params)
 }
 /*
