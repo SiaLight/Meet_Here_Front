@@ -8,7 +8,7 @@
                    </el-col>
                    <el-col :span="8">
                        <div class="inputBorder">
-                           <input type="text" v-model="userID"></input>
+                           <input type="text" v-model="userName"></input>
                        </div>
                    </el-col>
                </el-row>
@@ -37,34 +37,66 @@
     </div>
 </template>
 <script>
- import  utils from '../../utils'
+    import  utils from '../../utils'
     export default {
         data: () => ({
-            userID:'',
-            password:''
+            userName:'',
+            password:'',
+            telephone:'15317872182'
         }),
       methods:{
            loginHandle () {
-               this.$store.commit('LOGIN',{userId:this.userId,identity:1});
-               if(this.userID === '1')
-                   this.$router.push({name:'index'});
-               else
-                   this.$router.push({name:'AdminIndex'});
-               // utils.request({
-               //     invoke: utils.api.login,
-               //     params:{
-               //     }
-               // }).then(res =>{
-               //     console.log("进入登录验证");
-               //     console.log(res.data);
-               // })
-               //     .catch(res=>{
-               //         console.log("error");
-               //         console.log(res);
-               //     })
+               // this.$store.commit('LOGIN',{userId:this.userId,identity:1});
+               // if(this.userID === '1')
+               //     this.$router.push({name:'index'});
+               // else
+               //     this.$router.push({name:'AdminIndex'});
+               utils.request({
+                   invoke: utils.api.login,
+                   params:{
+                           username: this.userName,
+                           password: this.password
+                   }
+               }).then(res =>{
+                   console.log(res);
+                   if(res.code === 102 || res.code === 104 ){
+                       alert(res.message);
+                   }
+                   else if(res.code === 200){
+                   let userData = res.data;
+                       this.$store.commit('LOGIN',{
+                           userId:userData.id,
+                           userName:userData.username,
+                           identity:userData.admin});
+                       if(!userData.admin){
+                           this.$router.push({name:'index'});
+                       }
+                       else
+                           this.$router.push({name:'AdminIndex'});
+                   }
+               });
+
+
           },
           registerHandle(){
+              utils.request({
+                  invoke: utils.api.register,
+                  params:{
+                      username: this.userName,
+                      password: this.password,
+                      telephone:this.telephone,
 
+                  }
+              }).then(res =>{
+                  console.log("进入注册");
+                  console.log(res);
+                  if(res.code === 102 || res.code === 104 ){
+                      alert(res.message);
+                  }
+                  else if(res.code === 200){
+                      alert("注册成功");
+                  }
+              })
           }
       }
     }
@@ -78,14 +110,8 @@
 .LoginBoard{
     width:80%;
 }
-.box-card{
-    opacity:0.2;
-}
     .buttonDIV{
         margin-top: 20px;
-    }
-    .password{
-        margin-top: 10px
     }
     .inputDiv{
        z-index: 999;

@@ -3,10 +3,10 @@
                 <el-card class="box-card" >
                     <el-image
                             style="width: 100px; height: 100px"
-                            :src="item.url"></el-image>
+                            :src="item.image"></el-image>
                     <div>
                         <P CLASS="name">{{item.name}}</P>
-                        <P class="address">{{item.address }}</P>
+                        <P class="address">{{item.location }}</P>
                     </div>
                 </el-card>
     </div>

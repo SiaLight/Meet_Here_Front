@@ -20,14 +20,6 @@
         <div style="margin-top: 20px;">
             <el-row :gutter="20">
                 <el-col :span="8">
-                    <el-select v-model="selectSite" placeholder="请选择场地" @change="siteChange">
-                        <el-option
-                                v-for="item in site"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name">
-                        </el-option>
-                    </el-select>
                     <el-date-picker
                             v-model="dateTime"
                             type="date"
@@ -73,31 +65,12 @@
 </template>
 <script>
     import  commentUnit from './commentUnit'
+    import  utils from '../utils'
     export default {
         data(){
             return {
             stadium:{
-                id: 1,
-                image: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-                name: '热浪健身馆',
-                address:'中北校区理科大楼',
-                des:'djf dlfvjoesirjvmxk',
-                rent:'88'
             },
-                site:[
-                    {
-                        id: 1,
-                        name: '羽毛球场地'
-                    },
-                    {
-                        id: 2,
-                        name: '乒乓球场地'
-                    },
-                    {
-                        id: 3,
-                        name: '篮球场地'
-                    }
-                ],
                 dateTime:'',
                 time:{
                    startTime:'',
@@ -162,17 +135,6 @@
                  });
              });
          },
-         siteChange(name){
-             console.log(name);
-             this.order.siteName = name;
-             this.order.stadiumName = this.stadium.name;
-             this.order.stadiumId= this.stadium.id;
-             let obj={};
-             obj = this.site.find((item)=>{
-                 return item.name === name;
-             });
-             this.order.siteId = obj.id;
-         },
          dateChange(e){
              console.log(e);
          },
@@ -196,7 +158,28 @@
 
          }
 
-     }
+     },
+        mounted() {
+            let siteId = this.$route.params.id;
+            console.log(typeof (siteId));
+            utils.request({
+                invoke: utils.api.getSiteById,
+                params:{
+                    id: siteId
+                }
+            }).then(res =>{
+                console.log(res);
+            })
+            utils.request({
+                invoke: utils.api.getComments,
+                params:{
+                    pageNum:1,
+                    pageSize:10
+                }
+            }).then(res =>{
+                console.log(res);
+            })
+        }
     }
 </script>
 <style scoped>
