@@ -16,7 +16,7 @@
                         <el-menu-item index="/AdminIndex/stadiumManagement"><i class="el-icon-s-order"></i>场馆信息管理</el-menu-item>
                         <el-menu-item index="/AdminIndex/checkOrder"><i class="el-icon-s-grid"></i>预约订单审核</el-menu-item>
                         <el-menu-item index="/AdminIndex/ordersCount"><i class="el-icon-menu"></i>预约订单统计</el-menu-item>
-                        <el-menu-item index="/AdminIndex/checkNews"><i class="el-icon-s-unfold"></i>新闻动态审核</el-menu-item>
+                        <el-menu-item index="/AdminIndex/checkNews"><i class="el-icon-s-unfold"></i>新闻动态管理</el-menu-item>
                         <el-menu-item index="/AdminIndex/checkReply"><i class="el-icon-s-finance"></i>留言审核</el-menu-item>
                     </el-menu>
                     <div class="logout">

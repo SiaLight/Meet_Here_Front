@@ -17,7 +17,7 @@
                 prop="stadium"
                 label="场馆">
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="审核状态">
             <template slot-scope="scope">
                 <el-button
                         size="mini"
@@ -65,7 +65,6 @@
         },
         methods:{
             handleCheck(row){
-                console.log(row);
                 this.$confirm('请再次确认是否审核通过?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
