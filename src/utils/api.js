@@ -10,12 +10,40 @@ export const login = params => {
     return service.post('/login', params)
 }
 
+export const logout = params => {
+    return service.post('/logout', params)
+}
+/*
+* @param username
+* @param password
+* if error
+* return "用户名或密码不合法"
+* success return 用户信息
+* */
+export const register = params => {
+    return service.post('/register', params)
+}
+
 /*
 *  @param username
 *  成功返回信息，不成功返回0
 * */
 export const updateUsername = params => {
-    return service.post('/updateUsername', params)
+    return service.post('/user/update/username', params)
+}
+/*
+*  @param oldPassword,newPassword
+*  成功返回信息，不成功返回0
+* */
+export const updatePassword = params => {
+    return service.post('/user/update/password', params)
+}
+/*
+*  @param  telephone
+*  成功返回信息，不成功返回0
+* */
+export const updateTelephone= params => {
+    return service.post('/user/update/telephone', params)
 }
 /*
 *  @param username
@@ -24,13 +52,17 @@ export const updateUsername = params => {
 export const getuser = params => {
     return service.post('/getuser', params)
 }
-
 /*
-*  @param username
-*  成功返回用户信息
+*  根据id返回场地
 * */
-export const getsite = params => {
-    return service.post('/getuser', params)
+export const getSiteById = params => {
+    return service.get('/site/get', params)
+}
+/*
+*  成功返回场地的总数量
+* */
+export const getTotalNumsite = params => {
+    return service.get('/site/list', params)
 }
 
 /* news*/
@@ -123,4 +155,10 @@ export const siteListOrderByUser = params => {
 export const getOrder = params => {
     return service.post('/order/get', params)
 }
+
+/*comments*/
+export const getComments = params => {
+    return service.get('/site/comment/getcomments', params)
+}
+
 

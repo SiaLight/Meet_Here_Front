@@ -9,7 +9,8 @@ Vue.use(Vuex)
 const state = {
     loginState: false,
     userId: null,
-    identity: null // 1 for student; 0 for 管理员
+    userName: null,
+    identity: null // 0 for student; 1 for 管理员
 }
 
 export default new Vuex.Store({
