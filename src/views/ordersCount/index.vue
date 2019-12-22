@@ -20,22 +20,27 @@
             <el-table-column
                     type="index"
                     label="序号"
-                    width="40">
+                    width="80">
             </el-table-column>
             <el-table-column
                     prop="user"
                     label="用户"
-                    width="200">
+                    width="160">
             </el-table-column>
             <el-table-column
                     prop="stadium"
                     label="场馆"
-                    width="200">
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="site"
+                    label="场地"
+                    width="150">
             </el-table-column>
             <el-table-column
                     prop="time"
                     label="时间"
-                    width="200">
+                    width="220">
             </el-table-column>
             <el-table-column
                     prop="state"
@@ -53,11 +58,13 @@
                 order: [{
                     user: '张同学',
                     stadium: '中北体育馆',
+                    site:'场地1',
                     time: '2019.12.12 9:00-12:00',
                     state:"通过"
                 }, {
                     user: '王老师',
                     stadium: '中北羽毛球馆',
+                    site:'场地3',
                     time: '2019.12.12 9:00-12:00',
                     state: "通过"
                 }],
@@ -84,7 +91,6 @@
     }
 </script>
 <style scoped>
-
     .sear{
         float: left;
         margin-bottom: 20px;

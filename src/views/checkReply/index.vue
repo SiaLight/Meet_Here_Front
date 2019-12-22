@@ -6,22 +6,22 @@
         <el-table-column
                 prop="name"
                 label="姓名"
-                width="100">
+                width="150">
         </el-table-column>
         <el-table-column
                 prop="des"
                 label="内容"
-                width="180">
+                width="300">
         </el-table-column>
         <el-table-column
                 prop="stadium"
                 label="场馆"
-                width="100">
+                width="150">
         </el-table-column>
         <el-table-column
                 prop="time"
                 label="留言时间"
-                width="150">
+                width="200">
         </el-table-column>
         <el-table-column label="审核状态">
             <template slot-scope="scope">

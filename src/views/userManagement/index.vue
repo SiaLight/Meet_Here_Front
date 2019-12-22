@@ -3,53 +3,7 @@
             :data="tableData"
             stripe
             style="width: 100%">
-        <el-table-column type="expand">
-            <template scope="props">
-                <el-form label-position="left"  inline class="demo-table-expand" size="small" label-width="80px" >
-                    <el-row :gutter="20">
-                        <el-col :span="8">
-                            <el-form-item label="名称">
-                                <el-input
-                                        size="small"
-                                        placeholder="请输入内容"
-                                        v-model="props.row.name">
-                                </el-input>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="8">
-                            <el-form-item label="用户电话">
-                                <el-input
-                                        size="small"
-                                        placeholder="请输入内容"
-                                        v-model="props.row.phone">
-                                </el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row :gutter="20">
-                        <el-col :span="8">
-                            <el-form-item label="用户地址">
-                                <el-input
-                                        size="small"
-                                        placeholder="请输入内容"
-                                        v-model="props.row.address">
-                                </el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                   <el-row :gutter="20">
-                       <el-col :span="8">
-                           <el-form-item label="">
-                               <el-button
-                                       size="mini"
-                                       type="primary"
-                                       @click="handleEdit(props.$index,props.row)">确认修改</el-button>
-                           </el-form-item>
-                       </el-col>
-                   </el-row>
-                </el-form>
-            </template>
-        </el-table-column>
+
         <el-table-column
                 prop="name"
                 label="姓名"
@@ -58,18 +12,28 @@
         <el-table-column
                 prop="phone"
                 label="电话"
-                width="180">
+                width="200">
         </el-table-column>
         <el-table-column
                 prop="address"
-                label="地址">
+                label="地址"
+                width="300">
         </el-table-column>
+
         <el-table-column label="操作">
             <template slot-scope="scope">
                 <el-button
                         size="mini"
+                        :type="scope.row.type"
+                        @click="handleAuthority(scope.row)">
+                    <span v-if="scope.row.advanced">管理员(已为最高权限)</span>
+                    <span v-else>普通用户(单击升级权限)</span>
+                </el-button>
+                <el-button
+                        size="mini"
                         type="danger"
-                        @click="handleDelete(scope.$index, table)">删除</el-button>
+                        @click="handleDelete(scope.$index, tableData)">删除用户
+                </el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -82,30 +46,34 @@
                 tableData: [{
                     phone: '153155622',
                     name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    advanced:false
                 }, {
                     phone: '153155622',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1517 弄'
+                    name: '李小虎',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    advanced:false
                 }, {
                     phone: '153155622',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1519 弄'
+                    name: '文小虎',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    advanced:false
                 }, {
                     phone: '153155622',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1516 弄'
+                    name: '张小虎',
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    advanced:false
                 }]
             }
         },
         methods: {
-            handleDelete(index, row) {
-                this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+            handleDelete(index,tableData) {
+                this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.table.splice(index, 1)
+                    this.tableData.splice(index, 1)
                     this.$message({
                         type: 'success',
                         message: '删除成功',
@@ -117,7 +85,24 @@
                     })
                 })
             },
-            handleEdit(index, row) {
+            handleAuthority(row) {
+                this.$confirm('此操作将升级用户权限为管理员, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$message({
+                        type: 'success',
+                        message: '升级成功',
+                    });
+                   row.advanced=true;
+                   row.type = 'success'
+                }).catch(() => {
+                    this.$message({
+                        type: 'error',
+                        message: "取消修改"
+                    })
+                })
 
             }
         }

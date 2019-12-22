@@ -26,12 +26,12 @@
         <el-table-column
                 prop="startTime"
                 label="开始日期"
-                width="150">
+                width="200">
         </el-table-column>
         <el-table-column
                 prop="endTime"
                 label="结束日期"
-                width="150">
+                width="200">
         </el-table-column>
         <el-table-column label="审核状态">
             <template slot-scope="scope">
