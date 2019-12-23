@@ -85,7 +85,6 @@
                       username: this.userName,
                       password: this.password,
                       telephone:this.telephone,
-
                   }
               }).then(res =>{
                   console.log("进入注册");

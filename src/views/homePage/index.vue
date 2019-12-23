@@ -47,7 +47,18 @@
                 this.initPage(this.currentPage);
             },
             initPage(current){
-                this.selectStadium = this.stadiumData.slice((current-1)*this.pageSize,current*this.pageSize);
+                utils.request({
+                    invoke: utils.api.getStadium,
+                    params:{
+                        pageNum: current,
+                        pageSize: this.pageSize
+                    }
+                }).then(res =>{
+                    console.log(res);
+                    this.selectStadium = res.data;
+                    this.totalNum = res.total;
+                    console.log(this.selectStadium);
+                })
             },
             searchChange(){
                 if(!this.search){
@@ -66,20 +77,7 @@
         },
 
         mounted() {
-            utils.request({
-                invoke: utils.api.getTotalNumsite,
-                params:{
-                    pageNum:1,
-                    pageSize:8
-                }
-            }).then(res =>{
-                console.log("第一次获取");
-                console.log(res);
-                this.stadiumData = res.data;
-                this.totalNum = res.total;
-                this.initPage(this.currentPage);
-                console.log(this.selectStadium);
-            })
+            this.initPage(this.currentPage);
         }
     }
 </script>
