@@ -5,14 +5,14 @@
         <div class="detail">
            <el-row :gutter="30">
                <el-col :span="4" >
-                   <el-image :src="stadium.image" fit="fill"></el-image>
+                   <el-image :src="site.image" fit="fill" style="width: 100px;height:100px"></el-image>
                </el-col>
                <el-col :span="14" class="detailSite" >
                    <div class="detailSite">
-                       <h1 class="title">{{stadium.name}}</h1>
-                       <p class="color:#606266">{{stadium.des}}</p>
-                       <p>租金：<span style="color: red;font-weight: bolder">{{stadium.rent}}</span>元/小时</p>
-                       <P class="address"><i class="el-icon-location-outline"></i>{{stadium.address}}</P>
+                       <h1 class="title">{{site.name}}</h1>
+                       <p class="color:#606266">{{site.description}}</p>
+                       <p>租金：<span style="color: red;font-weight: bolder">{{site.rent}}</span>元/小时</p>
+                       <P class="address"><i class="el-icon-location-outline"></i>{{site.location}}</P>
                    </div>
                </el-col>
            </el-row>
@@ -43,15 +43,16 @@
                             :picker-options="{start: '08:30',step: '00:30',end: '18:30',minTime: time.startTime}">
                     </el-time-select>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="10">
                    <el-card body-style="padding: 10px" class="card">
                        <h1>订单信息</h1>
                        <el-divider class="divider"></el-divider>
-                       <P><span>场馆：</span>{{order.stadiumName}}</P>
+                       <div class="bookBox">
                        <P><span>场地：</span>{{order.siteName}}</P>
                        <P><span>开始时间：</span>{{order.startTime}}</P>
                        <P><span>结束时间：</span>{{order.endTime}}</P>
                        <P><span>租金：</span>{{order.rent}}</P>
+                       </div>
                        <el-divider class="divider"></el-divider>
                        <el-button type="danger" @click="book">预定</el-button>
                    </el-card>
@@ -59,7 +60,7 @@
             </el-row>
         </div>
        <div>
-           <comment-unit :comment="comment"></comment-unit>
+           <comment-unit :comment="comment" :siteId="site.id"></comment-unit>
        </div>
     </div>
 </template>
@@ -69,7 +70,7 @@
     export default {
         data(){
             return {
-            stadium:{
+            site:{
             },
                 dateTime:'',
                 time:{
@@ -80,37 +81,11 @@
                 order:{
                     siteName: '',
                     siteId: '',
-                    stadiumName:'',
-                    stadiumId:'',
                     rent:'',
                     startTime:'',
                     endTime:''
                 },
-                comment:[{
-                 id:'1',
-                    user_id:'张同学',
-                    site_id:'4',
-                    content:'这个场馆真好',
-                    status:false,
-                    createTime:'2019-12-10'
-                },
-                    {
-                        id:'2',
-                        user_id:'李同学',
-                        site_id:'4',
-                        content:'这个场馆真好',
-                        status:false,
-                        createTime:'2019-12-10'
-                    },
-                    {
-                        id:'3',
-                        user_id:'陈同学',
-                        site_id:'4',
-                        content:'这个场馆不太好',
-                        status:true,
-                        createTime:'2019-12-10'
-                    }
-                ]
+                comment:[]
             }
         },
         components:{commentUnit},
@@ -119,65 +94,74 @@
              this.$router.go(-1);
          },
          book(){
-             this.$confirm('请确定是否预约?', '提示', {
-                 confirmButtonText: '确定',
-                 cancelButtonText: '取消',
-                 type: 'warning'
-             }).then(() => {
-                 this.$message({
-                     type: 'success',
-                     message: '预约成功!'
-                 });
-             }).catch(() => {
-                 this.$message({
-                     type: 'info',
-                     message: '取消预约'
-                 });
-             });
+             utils.request({
+                 invoke: utils.api.createOrder,
+                 params:{
+                     siteId: this.site.id,
+                     siteName: this.site.name,
+                     rent: this.order.rent,
+                     startTime: this.order.startTime,
+                     endTime: this.order.endTime
+                 }
+             }).then(res =>{
+                 console.log(res);
+                 this.$message.success('预约成功');
+             }).catch(res =>{
+                 this.$message.error('预约失败');
+             })
          },
          dateChange(e){
              console.log(e);
          },
          startChange(e){
              console.log(e);
-             this.order.startTime = this.dateTime +' '+ e;
+             this.order.startTime = this.dateTime +' '+ e+':00';
+             this.comCount();
          },
          endChange(e){
              console.log(e);
-             this.order.endTime = this.dateTime +' '+ e;
-             let t1= this.time.startTime.split(":");
-             let t2= this.time.endTime.split(":");
-            let hour1 = parseInt(t1[0]);
-             let hour2 = parseInt(t2[0]);
-             let min1 = parseInt(t1[1]);
-             let min2 = parseInt(t2[1]);
-              let diff = hour2-hour1 +(min2-min1)/60;
-              this.order.rent = diff*this.stadium.rent;
-             console.log(diff);
-
-
+             this.order.endTime = this.dateTime +' '+ e+':00';
+            this.comCount();
+         },
+         comCount(){
+             if(this.order.startTime&&this.order.endTime)
+             {
+                 let newTime1 = new Date(this.order.startTime);
+                 let newTime2 = new Date(this.order.endTime);
+                 let diff = newTime2.getTime() - newTime1.getTime();
+                 diff = diff / (1000 * 60*60);
+                 this.order.rent = diff*this.site.rent;
+             }
          }
 
      },
         mounted() {
-            let siteId = this.$route.params.id;
-            console.log(typeof (siteId));
+            console.log(this.$route.params.id);
             utils.request({
                 invoke: utils.api.getSiteById,
                 params:{
-                    id: siteId
+                    id: this.$route.params.id
                 }
             }).then(res =>{
                 console.log(res);
+                this.site= res.data;
+                this.order.siteName = this.site.name;
+                this.order.siteId = this.site.id;
             })
             utils.request({
                 invoke: utils.api.getComments,
                 params:{
                     pageNum:1,
-                    pageSize:10
+                    pageSize:5,
+                    siteId: this.$route.params.id
                 }
             }).then(res =>{
                 console.log(res);
+                this.comment = res.data;
+                for(let i=0;i<this.comment.length;i++){
+                    this.comment[i].createTime = this.comment[i].createTime.replace("T"," ");
+                    console.log(this.comment[i].createTime);
+                }
             })
         }
     }
@@ -205,4 +189,9 @@
         color: #606266;
     }
 
+    .bookBox{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
 </style>

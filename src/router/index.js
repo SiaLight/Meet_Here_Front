@@ -35,7 +35,17 @@ export default new Router({
                 {
                     path: 'stadiumDetail/:id',
                     name:'stadiumDetail',
+                    component: () => import( '../components/siteDetail.vue'),
+                },
+                {
+                    path: 'siteDetail/:id',
+                    name:'siteDetail',
                     component: () => import( '../components/stadiumDetail.vue'),
+                },
+                {
+                    path: 'newsDetail/:id',
+                    name:'newsDetail',
+                    component: () => import( '../components/newsDetail.vue'),
                 },
                 {
                     path: 'appointment',
