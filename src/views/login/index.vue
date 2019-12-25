@@ -59,10 +59,7 @@
                    }
                }).then(res =>{
                    console.log(res);
-                   if(res.code === 102 || res.code === 104 ){
-                       alert(res.message);
-                   }
-                   else if(res.code === 200){
+                    if(res.code === 200){
                    let userData = res.data;
                        this.$store.commit('LOGIN',{
                            userId:userData.id,
@@ -73,6 +70,9 @@
                        }
                        else
                            this.$router.push({name:'AdminIndex'});
+                   }
+                   else{
+                        alert(res.message);
                    }
                });
 
