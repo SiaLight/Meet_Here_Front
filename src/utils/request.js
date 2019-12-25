@@ -1,14 +1,16 @@
 import  axios from 'axios'
 import  config from './config'
+import QS from 'qs'
 
 export  const service = axios.create({
     baseURL: config.BASE_URL,
     timeout: config.REQUEST_TIMEOUT,
-    headers: {'Access-Control-Allow-Origin':"*",
-        "Content-Type":"application/json",
-        "Accept":"application/json",
-        "Cache-Control":"no-cache",
-    }
+    headers: {
+    },
+    transformRequest: [function(data) {
+        data = QS.stringify(data)
+        return data
+    }]
 })
 
 service.interceptors.request.use(config =>{

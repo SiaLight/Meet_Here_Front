@@ -1,12 +1,21 @@
 <template>
     <div>
        <div v-for="item in comment " :key="item.id" class="commentBox">
-           <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-           <p class="name">{{item.user_id}}:</p>
-           <div class="box2">
-               <span>{{item.createTime}}</span>
-               <P>{{item.content}}</P>
+           <div class="detail">
+               <p class="time">{{item.createTime}}</p>
            </div>
+           <div>
+           <el-row>
+               <el-col :span="20">
+                   <div class="detail">
+                   <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                          <p class="name">{{item.reviewer.username}}:</p>
+                   <P style="margin-left: 5px">{{item.content}}</P>
+                   </div>
+               </el-col>
+           </el-row>
+       </div>
+
        </div>
         <div class="inputBox">
             <el-input
@@ -15,20 +24,38 @@
                     placeholder="请输入评论......"
                     v-model="conmentDetail">
             </el-input>
-            <el-button type="danger" class="but">提交评论</el-button>
+            <el-button type="danger" class="but" @click="publish">提交评论</el-button>
         </div>
     </div>
 </template>
 <script>
+    import  utils from '../utils'
     export default {
         props:{
             comment:{
                 type: Array
-            }
+            },
+            siteId: Number
         },
         data(){
             return{
-                conmentDetail:''
+                conmentDetail:'',
+                time:''
+            }
+        },
+        methods:{
+            publish(){
+                utils.request({
+                    invoke: utils.api.publishComment,
+                    params:{
+                       siteId: this.siteId,
+                        content: this.conmentDetail
+                    }
+                }).then(res =>{
+                    console.log(res);
+                }).catch(res =>{
+                    this.$message.error('评论失败');
+                })
             }
         }
     }
@@ -36,21 +63,16 @@
 <style scoped>
 
     .commentBox{
+        margin-left: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+
+    }
+    .detail{
         display: flex;
         flex-direction: row;
-        margin-left: 100px;
-    }
-    .box2{
-        margin-left: 10px;
-        float: left;
-    }
-    .box2 span{
-        font-size: 12px;
-        color: #909399;
-    }
-    .box2 p{
-        margin-top: 0px;
-        font-size: 14px;
+        align-items: center;
     }
     .name{
         margin-left: 5px;
@@ -58,7 +80,7 @@
     }
     .inputBox{
         width:60%;
-        margin-left: 100px;
+        margin-left: 30px;
         margin-top: 20px;
         display: flex;
         flex-direction: column;
@@ -67,5 +89,9 @@
     .but{
         margin-top: 10px;
         width:100px;
+    }
+    .time{
+         font-size: 12px;
+        color: #909399;
     }
 </style>

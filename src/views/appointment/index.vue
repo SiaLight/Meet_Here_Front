@@ -1,4 +1,10 @@
 <template>
+    <div>
+        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu-item index="1">已审核订单</el-menu-item>
+            <el-menu-item index="2">未审核订单</el-menu-item>
+
+        </el-menu>
     <el-table
             :data="tableData"
             stripe
@@ -7,35 +13,13 @@
             <template scope="props">
                 <el-form label-position="left"  inline class="demo-table-expand" size="small" label-width="80px" >
                     <el-row :gutter="20">
-                        <el-col :span="8">
-                            <el-form-item label="场馆">
-                                <el-input
-                                        size="small"
-                                        disabled="true"
-                                        placeholder="请输入内容"
-                                        v-model="props.row.stadium">
-                                </el-input>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="8">
-                            <el-form-item label="场地">
-                                <el-input
-                                        size="small"
-                                        disabled="true"
-                                        placeholder="请输入内容"
-                                        v-model="props.row.site">
-                                </el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row :gutter="20">
                             <el-col :span="8">
                                 <el-form-item label="开始日期">
                                     <el-date-picker
                                             v-model="props.row.startTime"
                                             type="datetime"
                                             value-format="yyyy-MM-dd HH:mm:ss"
-                                            placeholder="选择日期时间" @change="startChange">
+                                            placeholder="选择日期时间">
                                     </el-date-picker>
                                 </el-form-item>
                         </el-col>
@@ -45,20 +29,8 @@
                                         v-model="props.row.endTime"
                                         type="datetime"
                                         value-format="yyyy-MM-dd HH:mm:ss"
-                                        placeholder="选择日期时间" @change="endChange(props.row)">
+                                        placeholder="选择日期时间">
                                 </el-date-picker>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row :gutter="20">
-                        <el-col :span="8">
-                            <el-form-item label="租金">
-                                <el-input
-                                        size="small"
-                                        disabled="true"
-                                        placeholder="请输入内容"
-                                        v-model="props.row.rent">
-                                </el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -71,17 +43,20 @@
                                         @click="handleEdit(props.$index,props.row)">确认修改</el-button>
                             </el-form-item>
                         </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="">
+                                <el-button
+                                        size="mini"
+                                        type="primary"
+                                        @click="handleCancel(props.$index,props.row)">取消修改</el-button>
+                            </el-form-item>
+                        </el-col>
                     </el-row>
                 </el-form>
             </template>
         </el-table-column>
         <el-table-column
-                prop="stadium"
-                label="场馆"
-                width="150">
-        </el-table-column>
-        <el-table-column
-                prop="site"
+                prop="siteName"
                 label="场地"
                 width="150">
         </el-table-column>
@@ -109,43 +84,36 @@
             </template>
         </el-table-column>
     </el-table>
+    <el-pagination
+            background
+            class="page"
+            layout="prev, pager, next"
+            :current-page.sync="currentPage"
+            @current-change="handleCurrentChange"
+            :page-size="pageSize"
+            :pager-count="5"
+            :total="totalNum">
+    </el-pagination>
+    </div>
 </template>
 
 <script>
+    import  utils from '../../utils'
     export default {
         data() {
             return {
-                tableData: [{
-                    stadium:'体育馆',
-                    site:'羽毛球场地',
-                    rent:'80',
-                    startTime:'2019-10-12 8:30:00',
-                    endTime: '2019-10-12 9:30:00'
-                }, {
-                    stadium:'体育馆',
-                    site:'羽毛球场地',
-                    rent:'80',
-                    startTime:'2019-10-12 8:30:00',
-                    endTime: '2019-10-12 9:30:00'
-                }, {
-                    stadium:'体育馆',
-                    site:'羽毛球场地',
-                    rent:'80',
-                    startTime:'2019-10-12 8:30:00',
-                    endTime: '2019-10-12 9:30:00'
-                }, {
-                    stadium:'体育馆',
-                    site:'羽毛球场地',
-                    rent:'80',
-                    startTime:'2019-10-12 8:30:00',
-                    endTime: '2019-10-12 9:30:00'
-                }]
+                activeIndex: '1',
+                totalNum: 0,
+                pageSize: 2,
+                currentPage:1,
+                unCheckedOrder:[],
+                checkedOrder:[],
+                tableData:[],
+                oldOrder:{},
+                selectTab:''
             }
         },
         methods:{
-           startChange(row){
-               console.log(row);
-           },
             handleEdit(index,row) {
                 console.log(index, row);
                 let newTime1 = new Date(row.startTime);
@@ -153,7 +121,99 @@
                 let diff = newTime2.getTime() - newTime1.getTime();
                 diff = diff / (1000 * 60*60);
                 this.tableData[index].rent = diff*88;
+                this.initOldOrder(index);
+                utils.request({
+                    invoke: utils.api.userUpdateOrder,
+                    params:{
+                        orderId: row.id,
+                        siteId: row.siteId,
+                        oldStartTime: this.oldOrder.startTime,
+                        startTime: row.startTime,
+                        endTime: row.endTime
+                    }
+                }).then(res =>{
+                    this.$message.success('修改成功');
+                }).catch(res=>{
+                    this.$message.error('修改失败');
+                })
+            },
+            handleCancel(){
+                if(this.selectTab === '1')
+                  this.initOrder(1);
+                else
+                    this.initOrder(0);
+            },
+            handleCurrentChange(index){
+                this.initOldOrder(index);
+                this.tableData[index].startTime = this.oldOrder.startTime;
+                this.tableData[index].endTime = this.oldOrder.endTime;
+
+            },
+            initOldOrder(index){
+               if(this.selectTab === '1')
+                   this.oldOrder = this.checkedOrder[index];
+               else
+                   this.oldOrder =this.unCheckedOrder[index];
+            },
+            handleDelete(index,row){
+                utils.request({
+                    invoke: utils.api.userCancelOrder,
+                    params:{
+                        orderId: row.id
+                    }
+                }).then(res =>{
+                    console.log(res);
+                    this.$message.success('取消成功');
+
+                }).catch(res=>{
+                    this.$message.error('取消失败');
+                })
+            },
+            handleSelect(e){
+               this.selectTab =e;
+               if(e === '1')
+                   this.tableData = this.checkedOrder;
+                else this.tableData = this.unCheckedOrder;
+            },
+            initOrder(isCheck){
+                utils.request({
+                    invoke: utils.api.siteListOrderByUser,
+                    params:{
+                        status: isCheck,
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize
+                    }
+                }).then(res =>{
+                    console.log(res);
+                    this.totalNum = res.total;
+                    if(isCheck)
+                    { this.checkedOrder = res.data;
+                       for(let i=0;i<this.checkedOrder.length;i++){
+                           this.checkedOrder[i].startTime=this.checkedOrder[i].startTime.replace("T"," ");
+                           this.checkedOrder[i].endTime=this.checkedOrder[i].endTime.replace("T"," ");
+                       }
+
+                    }
+                    else
+                    {this.unCheckedOrder = res.data;
+                        for(let i=0;i<this.unCheckedOrder.length;i++){
+                            this.unCheckedOrder[i].startTime=this.unCheckedOrder[i].startTime.replace("T"," ");
+                            this.unCheckedOrder[i].endTime=this.unCheckedOrder[i].endTime.replace("T"," ");
+                        }
+                    }
+                })
             }
+        },
+        mounted() {
+            this.initOrder(1);
+            this.initOrder(0);
         }
     }
 </script>
+<style scoped>
+    .page{
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+    }
+</style>

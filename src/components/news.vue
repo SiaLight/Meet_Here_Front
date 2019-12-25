@@ -1,9 +1,8 @@
 <template>
-    <div>
+    <div @click="toDetail">
         <el-card class="card">
             <h4>{{news.title}}</h4>
-            <p>{{news.content}}</p>
-            <P class="author">from:{{news.author}}</P>
+            <P class="author">from:{{news.writer.username}}</P>
         </el-card>
     </div>
 </template>
@@ -13,6 +12,11 @@
          news:{
              type: Object,
          }
+        },
+        methods:{
+            toDetail(){
+                this.$router.push({name:'newsDetail',params: {id: this.news.id}});
+            }
         }
     }
 </script>
@@ -20,6 +24,7 @@
 .card{
     display: flex;
    float: left;
+    width: 200px;
 }
     .author{
         color: #909399;

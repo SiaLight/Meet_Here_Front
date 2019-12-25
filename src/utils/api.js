@@ -23,6 +23,9 @@ export const logout = params => {
 export const register = params => {
     return service.post('/register', params)
 }
+export const getUser = params => {
+    return service.post('/user/get', params)
+}
 
 /*
 *  @param username
@@ -56,17 +59,18 @@ export const getuser = params => {
 *  根据id返回场地
 * */
 export const getSiteById = params => {
-    return service.get('/site/get', params)
+    return service.post('/site/get', params)
 }
 /*
 *  成功返回场地的总数量
 * */
 export const getTotalNumsite = params => {
-    return service.get('/site/list', params)
+    return service.post('/site/list', params)
 }
-
+export const getTotalsite = params => {
+    return service.post('/site/listByStadium', params)
+}
 /* news*/
-
 
 /*
 *  @param title,content,image
@@ -133,7 +137,9 @@ export const cancelOrder = params => {
 export const userCancelOrder = params => {
     return service.post('/order/user/cancel', params)
 }
-
+export const userUpdateOrder = params => {
+    return service.post('/order/user/update', params)
+}
 /*
 *  @param   orderId,status,{pageNum,pageSize}
 * 管理员根据场地查看订单
@@ -158,7 +164,17 @@ export const getOrder = params => {
 
 /*comments*/
 export const getComments = params => {
-    return service.get('/site/comment/getcomments', params)
+    return service.post('/site/comment/getcomments', params)
 }
 
+export const publishComment = params => {
+    return service.post('/site/comment/publish', params)
+}
+
+export const getStadium = params => {
+    return service.post('/stadium/list', params)
+}
+export const getStadiumById = params => {
+    return service.post('/stadium/get', params)
+}
 
