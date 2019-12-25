@@ -53,6 +53,7 @@
                     }
                 }).then(res =>{
                     console.log(res);
+                    this.$message.success('评论成功');
                 }).catch(res =>{
                     this.$message.error('评论失败');
                 })

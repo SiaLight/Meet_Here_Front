@@ -94,9 +94,6 @@
         margin-top: 20px;
     }
     .detailSite{
-        /*display: flex;*/
-        /*flex-direction: column;*/
-        /*justify-content:flex-start;*/
         float: left;
 
     }
