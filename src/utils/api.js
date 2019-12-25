@@ -49,7 +49,7 @@ export const updateTelephone= params => {
 *  @param username
 *  成功返回用户信息
 * */
-export const getuser = params => {
+export const getUser = params => {
     return service.post('/user/get', params)
 }
 /*
@@ -80,41 +80,41 @@ export const changePermission = params=>{
 *  @param siteId
 * */
 export const getSiteById = params => {
-    return service.get('/site/get', params)
+    return service.post('/site/get', params)
 }
 /*
 * @param pageParam
 *  成功获取场地列表
 * */
-export const getSiteList = params=>{
-    return service.get('site/list',params)
+export const getTotalNumsite = params=>{
+    return service.post('site/list',params)
 }
 /*
 *  成功根据场馆获取场地
 * */
-export const getSiteListByStadium = params=>{
-    return service.get('site/list',params)
+export const getTotalsite = params=>{
+    return service.post('site/listByStadium',params)
 }
 /*
 *  @param site
 *  成功创建场地
 * */
 export const createSite = params=>{
-    return service.get('site/create',params)
+    return service.post('site/create',params)
 }
 /*
 *  @param siteId
 *  成功删除场地
 * */
 export const deleteSiteById = params=>{
-    return service.get('site/delete',params)
+    return service.post('site/delete',params)
 }
 /*
 *  @param updateParam
 *  成功更新场地信息
 * */
 export const updateSite = params=>{
-    return service.get('site/update',params)
+    return service.post('site/update',params)
 }
 /*
 * 场馆 stadium
@@ -122,20 +122,33 @@ export const updateSite = params=>{
 /*
 *  成功创建场馆
 * */
+
 export const createStadium = params =>{
-    return service.get('/stadium/create',params)
+    return service.post('/stadium/create',params)
+}
+/*
+*  成功获取场馆列表
+* */
+export const getStadium = params => {
+    return service.post('/stadium/list', params)
+}
+/*
+*  成功获取场馆信息
+* */
+export const getStadiumById = params => {
+    return service.post('/stadium/get', params)
 }
 /*
 *  成功删除场馆
 * */
 export const deleteStadium = params =>{
-    return service.get('/stadium/delete',params)
+    return service.post('/stadium/delete',params)
 }
 /*
 *  成功更新场馆
 * */
 export const updateStadium = params =>{
-    return service.get('/stadium/update',params)
+    return service.post('/stadium/update',params)
 }
 
 /*
@@ -207,6 +220,13 @@ export const cancelOrder = params => {
 export const userCancelOrder = params => {
     return service.post('/order/user/cancel', params)
 }
+/*
+*  @param   orderId
+* 普通用户修改订单
+* */
+export const userUpdateOrder = params => {
+    return service.post('/order/user/update', params)
+}
 
 /*
 *  @param   orderId,status,{pageNum,pageSize}
@@ -236,21 +256,21 @@ export const getOrder = params => {
 * 获取所有评论
 * */
 export const getComments = params => {
-    return service.get('/site/comment/getcomments', params)
+    return service.post('/site/comment/getcomments', params)
 }
 /*
 *  @param  CommentPublishParam
 * 发表评论
 * */
 export const publishComment = params =>{
-    return service.get('/site/comment/publish',params)
+    return service.post('/site/comment/publish',params)
 }
 /*
 *  @param  CommentVO
 * 删除评论
 * */
 export const deleteComment = params =>{
-    return service.get('/site/comment/delete',params)
+    return service.post('/site/comment/delete',params)
 }
 /*
 *  @param  CommentVO
@@ -258,7 +278,7 @@ export const deleteComment = params =>{
 * 审核评论
 * */
 export const auditComment = params =>{
-    return service.get('/site/comment/audit',params)
+    return service.post('/site/comment/audit',params)
 }
 
 
