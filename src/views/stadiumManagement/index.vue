@@ -5,7 +5,7 @@
             <el-dialog title="添加场馆" :visible.sync="dialogFormVisible"  size="small">
                 <addStadium></addStadium>
             </el-dialog>
-    </div>
+        </div>
         <el-table
             :data="stadiumData"
             stripe
@@ -116,8 +116,14 @@
         methods:{
             handleAdd(){
                 this.dialogFormVisible =true
+            },
+            handleDelete(index,row){
+
+            },
+            handleEdit(index, row) {
 
             }
+
         }
     }
 </script>

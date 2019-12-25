@@ -1,14 +1,14 @@
 <template>
     <div class="form">
     <el-form label-position="right"  class="demo-table-expand" label-width="80px">
-                <el-form-item label="名称" >
+                <el-form-item label="场馆名称" >
                     <el-input
                             size="small"
                             placeholder="请输入内容"
                             v-model="stadium.name">
-
                     </el-input>
                 </el-form-item>
+
                 <el-form-item label="场馆电话">
                     <el-input
                             size="small"

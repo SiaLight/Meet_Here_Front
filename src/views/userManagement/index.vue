@@ -69,7 +69,7 @@
                 <el-button
                         size="mini"
                         type="danger"
-                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                        @click="handleDelete(scope.$index, table)">删除</el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -96,6 +96,29 @@
                     name: '王小虎',
                     address: '上海市普陀区金沙江路 1516 弄'
                 }]
+            }
+        },
+        methods: {
+            handleDelete(index, row) {
+                this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.table.splice(index, 1)
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功',
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'error',
+                        message: "取消删除"
+                    })
+                })
+            },
+            handleEdit(index, row) {
+
             }
         }
     }
