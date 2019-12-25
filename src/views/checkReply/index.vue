@@ -6,22 +6,27 @@
         <el-table-column
                 prop="name"
                 label="姓名"
-                width="150">
+                width="100">
         </el-table-column>
         <el-table-column
                 prop="des"
                 label="内容"
-                width="300">
+                width="220">
         </el-table-column>
         <el-table-column
                 prop="stadium"
                 label="场馆"
-                width="150">
+                width="120">
+        </el-table-column>
+        <el-table-column
+                prop="site"
+                label="场地"
+                width="120">
         </el-table-column>
         <el-table-column
                 prop="time"
                 label="留言时间"
-                width="200">
+                width="180">
         </el-table-column>
         <el-table-column label="审核状态">
             <template slot-scope="scope">
@@ -56,24 +61,28 @@
                     name: '王小虎',
                     des:'场馆位置不错',
                     stadium:'体育馆',
+                    site:'羽毛球场地',
                     time:'2019-10-12 8:30:00',
                     checked: 0
                 }, {
                     name: '王小虎',
                     des:'场馆位置不错',
                     stadium:'体育馆',
+                    site:'羽毛球场地',
                     time:'2019-10-12 8:30:00',
                     checked: 0
                 }, {
                     name: '王小虎',
                     des:'场馆位置不错',
                     stadium:'体育馆',
+                    site:'羽毛球场地',
                     time:'2019-10-12 8:30:00',
                     checked: 0
                 }, {
                     name: '王小虎',
                     des:'场馆位置不错',
                     stadium:'体育馆',
+                    site:'羽毛球场地',
                     time:'2019-10-12 8:30:00',
                     checked: 0
                 }],

@@ -29,13 +29,13 @@
                 <el-table-column
                         prop="author"
                         label="作者"
-                        width="120"
+                        width="100"
                         sortable>
                 </el-table-column>
                 <el-table-column
                         prop="title"
                         label="新闻标题"
-                        width="180"
+                        width="150"
                         sortable>
                 </el-table-column>
                 <el-table-column

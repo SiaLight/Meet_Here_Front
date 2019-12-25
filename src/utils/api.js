@@ -23,9 +23,6 @@ export const logout = params => {
 export const register = params => {
     return service.post('/register', params)
 }
-export const getUser = params => {
-    return service.post('/user/get', params)
-}
 
 /*
 *  @param username
@@ -53,25 +50,97 @@ export const updateTelephone= params => {
 *  成功返回用户信息
 * */
 export const getuser = params => {
-    return service.post('/getuser', params)
+    return service.post('/user/get', params)
 }
 /*
-*  根据id返回场地
+*  @param username
+*  成功列出用户列表
+* */
+export const listUser = params=>{
+    return service.post('/user/list',params)
+}
+/*
+*  @param username
+*  成功删除用户
+* */
+export const deleteUser = params=>{
+    return service.post('/user/delete',params)
+}
+/*
+*  @param username
+*  成功更改用户权限
+* */
+export const changePermission = params=>{
+    return service.post('/user/update/permission',params)
+}
+/*
+*  场地site
+* /
+/*
+*  @param siteId
 * */
 export const getSiteById = params => {
-    return service.post('/site/get', params)
+    return service.get('/site/get', params)
 }
 /*
-*  成功返回场地的总数量
+* @param pageParam
+*  成功获取场地列表
 * */
-export const getTotalNumsite = params => {
-    return service.post('/site/list', params)
+export const getSiteList = params=>{
+    return service.get('site/list',params)
 }
-export const getTotalsite = params => {
-    return service.post('/site/listByStadium', params)
+/*
+*  成功根据场馆获取场地
+* */
+export const getSiteListByStadium = params=>{
+    return service.get('site/list',params)
 }
-/* news*/
+/*
+*  @param site
+*  成功创建场地
+* */
+export const createSite = params=>{
+    return service.get('site/create',params)
+}
+/*
+*  @param siteId
+*  成功删除场地
+* */
+export const deleteSiteById = params=>{
+    return service.get('site/delete',params)
+}
+/*
+*  @param updateParam
+*  成功更新场地信息
+* */
+export const updateSite = params=>{
+    return service.get('site/update',params)
+}
+/*
+* 场馆 stadium
+* */
+/*
+*  成功创建场馆
+* */
+export const createStadium = params =>{
+    return service.get('/stadium/create',params)
+}
+/*
+*  成功删除场馆
+* */
+export const deleteStadium = params =>{
+    return service.get('/stadium/delete',params)
+}
+/*
+*  成功更新场馆
+* */
+export const updateStadium = params =>{
+    return service.get('/stadium/update',params)
+}
 
+/*
+*新闻 news
+* */
 /*
 *  @param title,content,image
 *  成功返回用户信息
@@ -106,10 +175,11 @@ export const getcatalogNews = params => {
     return service.post('/news/getcatalog', params)
 }
 
-//order ***************
+/* order*/
 
 /*
 *  @param  siteId,siteName,rent,startTime,endTime
+* 创建订单
 * */
 export const createOrder = params => {
     return service.post('/order/create', params)
@@ -137,9 +207,7 @@ export const cancelOrder = params => {
 export const userCancelOrder = params => {
     return service.post('/order/user/cancel', params)
 }
-export const userUpdateOrder = params => {
-    return service.post('/order/user/update', params)
-}
+
 /*
 *  @param   orderId,status,{pageNum,pageSize}
 * 管理员根据场地查看订单
@@ -163,18 +231,35 @@ export const getOrder = params => {
 }
 
 /*comments*/
+/*
+*  @param  pageParams
+* 获取所有评论
+* */
 export const getComments = params => {
-    return service.post('/site/comment/getcomments', params)
+    return service.get('/site/comment/getcomments', params)
+}
+/*
+*  @param  CommentPublishParam
+* 发表评论
+* */
+export const publishComment = params =>{
+    return service.get('/site/comment/publish',params)
+}
+/*
+*  @param  CommentVO
+* 删除评论
+* */
+export const deleteComment = params =>{
+    return service.get('/site/comment/delete',params)
+}
+/*
+*  @param  CommentVO
+* @param AuditOption
+* 审核评论
+* */
+export const auditComment = params =>{
+    return service.get('/site/comment/audit',params)
 }
 
-export const publishComment = params => {
-    return service.post('/site/comment/publish', params)
-}
 
-export const getStadium = params => {
-    return service.post('/stadium/list', params)
-}
-export const getStadiumById = params => {
-    return service.post('/stadium/get', params)
-}
 

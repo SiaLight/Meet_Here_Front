@@ -29,7 +29,7 @@
                 <el-table-column
                         prop="stadium"
                         label="场馆名称"
-                        width="250"
+                        width="200"
                         sortable>
                 </el-table-column>
                 <el-table-column
@@ -124,7 +124,7 @@
                         :label-width="formLabelWidth">
                     <el-input
                             v-model="addForm.stadium"
-                            placeholder="请输入您的名字"
+                            placeholder="请输入场馆名字"
                             autocomplete="off">
                     </el-input>
                 </el-form-item>

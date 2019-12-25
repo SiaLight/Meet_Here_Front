@@ -26,8 +26,8 @@
                         size="mini"
                         :type="scope.row.type"
                         @click="handleAuthority(scope.row)">
-                    <span v-if="scope.row.advanced">管理员(已为最高权限)</span>
-                    <span v-else>普通用户(单击升级权限)</span>
+                    <span v-if="scope.row.advanced">管理员</span>
+                    <span v-else>普通用户</span>
                 </el-button>
                 <el-button
                         size="mini"

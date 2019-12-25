@@ -48,9 +48,17 @@
             </el-table-column>
         </el-table>
         </div>
+        <div class="block" style="height:70px;">
+            <el-pagination
+                    layout="prev, pager, next"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="pageSize">
+            </el-pagination>
+        </div>
     </div>
 </template>
-<script>
+<script type="es6">
     export default {
 
         data() {
@@ -67,9 +75,101 @@
                     site:'场地3',
                     time: '2019.12.12 9:00-12:00',
                     state: "通过"
+                },{
+                    user: '张同学',
+                    stadium: '中北体育馆',
+                    site:'场地1',
+                    time: '2019.12.12 9:00-12:00',
+                    state:"通过"
+                }, {
+                    user: '王老师',
+                    stadium: '中北羽毛球馆',
+                    site:'场地3',
+                    time: '2019.12.12 9:00-12:00',
+                    state: "通过"
+                },{
+                    user: '张同学',
+                    stadium: '中北体育馆',
+                    site:'场地1',
+                    time: '2019.12.12 9:00-12:00',
+                    state:"通过"
+                }, {
+                    user: '王老师',
+                    stadium: '中北羽毛球馆',
+                    site:'场地3',
+                    time: '2019.12.12 9:00-12:00',
+                    state: "通过"
+                },{
+                    user: '张同学',
+                    stadium: '中北体育馆',
+                    site:'场地1',
+                    time: '2019.12.12 9:00-12:00',
+                    state:"通过"
+                }, {
+                    user: '王老师',
+                    stadium: '中北羽毛球馆',
+                    site:'场地3',
+                    time: '2019.12.12 9:00-12:00',
+                    state: "通过"
+                },{
+                    user: '张同学',
+                    stadium: '中北体育馆',
+                    site:'场地1',
+                    time: '2019.12.12 9:00-12:00',
+                    state:"通过"
+                }, {
+                    user: '王老师',
+                    stadium: '中北羽毛球馆',
+                    site:'场地3',
+                    time: '2019.12.12 9:00-12:00',
+                    state: "通过"
+                },{
+                    user: '张同学',
+                    stadium: '中北体育馆',
+                    site:'场地1',
+                    time: '2019.12.12 9:00-12:00',
+                    state:"通过"
+                }, {
+                    user: '王老师',
+                    stadium: '中北羽毛球馆',
+                    site:'场地3',
+                    time: '2019.12.12 9:00-12:00',
+                    state: "通过"
+                },{
+                    user: '张同学',
+                    stadium: '中北体育馆',
+                    site:'场地1',
+                    time: '2019.12.12 9:00-12:00',
+                    state:"通过"
+                }, {
+                    user: '王老师',
+                    stadium: '中北羽毛球馆',
+                    site:'场地3',
+                    time: '2019.12.12 9:00-12:00',
+                    state: "通过"
+                },{
+                    user: '张同学',
+                    stadium: '中北体育馆',
+                    site:'场地1',
+                    time: '2019.12.12 9:00-12:00',
+                    state:"通过"
+                }, {
+                    user: '王老师',
+                    stadium: '中北羽毛球馆',
+                    site:'场地3',
+                    time: '2019.12.12 9:00-12:00',
+                    state: "通过"
                 }],
+                //分页
+                    pageSize: 10, //每页条数,  默认10条
+                    currentPage:1,
+                    tempList:[],
+
                 search:''
             }
+        },
+        mounted(){
+            this.init() //页面内初始加载就调用这个函数
         },
 
         computed:{
@@ -87,6 +187,31 @@
         },
 
         methods:{
+            init(){
+                    utils.request({
+                        invoke: utils.api.getOrder,
+                        params:{
+                            pageSize:10,
+                            pageNum:1
+                        }
+                    }).then(res =>{
+                        console.log("第一次获取");
+                        console.log(res);
+                        this.order = res.data;
+                        this.totalRecords = res.total;
+                        this.initPage(this.currentPage);
+                    })
+            },
+            handleCurrentChange(list,currentPage) {
+                let from=(currentPage-1)*this.pageSize;
+                let to=currentPage*this.pageSize;
+                this.tempList=[];
+                for(;from<to;from++){
+                    if(list[from]){
+                        this.tempList.push(list[from]);
+                    }
+                }
+            },
         }
     }
 </script>

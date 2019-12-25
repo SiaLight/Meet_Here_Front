@@ -6,17 +6,17 @@
         <el-table-column
                 prop="user"
                 label="用户"
-                width="100">
+                width="80">
         </el-table-column>
         <el-table-column
                 prop="stadium"
                 label="场馆"
-                width="120">
+                width="100">
         </el-table-column>
         <el-table-column
                 prop="site"
                 label="场地"
-                width="120">
+                width="100">
         </el-table-column>
         <el-table-column
                 prop="rent"
@@ -26,12 +26,12 @@
         <el-table-column
                 prop="startTime"
                 label="开始日期"
-                width="200">
+                width="160">
         </el-table-column>
         <el-table-column
                 prop="endTime"
                 label="结束日期"
-                width="200">
+                width="160">
         </el-table-column>
         <el-table-column label="审核状态">
             <template slot-scope="scope">
