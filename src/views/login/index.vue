@@ -26,7 +26,7 @@
             <div class="buttonDIV">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-button type="primary" plain @click="loginHandle">登录</el-button>
+                        <el-button type="primary" plain @click="loginHandle" class="logIN">登录</el-button>
                     </el-col>
                     <el-col :span="12">
                         <el-button type="primary" plain @click="registerHandle">注册</el-button>
