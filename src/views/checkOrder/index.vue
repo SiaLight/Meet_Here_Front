@@ -93,7 +93,10 @@
             }
         },
         mounted:function () {
-            this.loadOrder();
+            this.loadOrder(0);
+            this.loadOrder(1);
+            this.loadOrder(2);
+            this.loadOrder(3);
         },
         methods:{
             //数据导入
@@ -114,7 +117,7 @@
                     else{
                         this.checkedOrder = res.data;
                     }
-                    this.$message('导入数据成功');
+                    this.$message('订单导入成功');
                 })
             },
             //分页处理
@@ -148,8 +151,18 @@
                         message: '审核不通过'
                     });
                     this.orderData.splice(index, 1);
-                    this.handleCheck()
                     row.checked = 2;
+                    utils.request({
+                        invoke: utils.api.auditOrder,
+                        params:{
+                            SiteBookingOrderAuditParam: {
+                                orderId:row.id,
+                                auditStatus:row.checked
+                            },
+                        }
+                    }).then(res=>{
+                        console.log(res);
+                    })
                 }).catch(() => {
                     this.$message({
                         type: 'error',
@@ -166,9 +179,19 @@
                 }).then(() => {
                     this.$message({
                         type: 'success',
-                        message: '审核通过'
+                        message: '前端审核通过'
                     });
                     row.checked = 1;
+                    utils.request({
+                        invoke: utils.api.auditOrder,
+                        params:{
+                                orderId:row.id,
+                                auditStatus:row.checked
+                        }
+                    }).then(res=>{
+                        console.log(res);
+                        this.$message.success('后台审核通过')
+                    })
                 }).catch(() => {
                     this.$message({
                         type: 'error',
@@ -182,5 +205,9 @@
     }
 </script>
 <style scoped>
-
+    .page{
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+    }
 </style>

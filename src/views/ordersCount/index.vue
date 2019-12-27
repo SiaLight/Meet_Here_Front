@@ -55,9 +55,10 @@
                     prop="state"
                     label="审核状态">
             </el-table-column>
+
         </el-table>
         </div>
-        <div class="block" style="height:70px;">
+
             <el-pagination
                     background
                     class="page"
@@ -68,7 +69,7 @@
                     :pager-count="5"
                     :total="totalNum">
             </el-pagination>
-        </div>
+
     </div>
 </template>
 <script type="es6">
@@ -315,6 +316,11 @@
     }
 </script>
 <style scoped>
+    .page{
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+    }
     .sear{
         float: left;
         margin-bottom: 20px;
