@@ -1,4 +1,10 @@
 <template>
+    <div>
+        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu-item index="1">未审核订单</el-menu-item>
+            <el-menu-item index="2">已审核订单</el-menu-item>
+        </el-menu>
+
     <el-table
             :data="orderData"
             stripe
@@ -46,7 +52,7 @@
                         <span >通过</span>
                     </el-button>
                     <el-button
-                            @click="handleUnCheck(scope.row)"
+                            @click="handleUnCheck(scope.$index,scope.row)"
                             size="small"
                             type="danger"
                             icon="delete">
@@ -56,36 +62,29 @@
             </template>
         </el-table-column>
     </el-table>
+    </div>
 </template>
 
 <script>
-
-
+    import  utils from '../../utils'
     export default {
         data(){
             return {
-                orderData:[{
-                    user:'张同学',
-                    stadium:'体育馆',
-                    site:'羽毛球场地',
-                    rent:'80',
-                    startTime:'2019-10-12 8:30:00',
-                    endTime: '2019-10-12 9:30:00',
-                    checked:0
-                },{
-                    user:'王老师',
-                    stadium:'体育馆',
-                    site:'羽毛球场地',
-                    rent:'80',
-                    startTime:'2019-10-12 8:30:00',
-                    endTime: '2019-10-12 9:30:00',
-                    checked: 0
-                }],
+                activeIndex:'1',
+                totalNum: 0,
+                pageSize: 2,
+                currentPage:1,
+                orderData:[],
+                unCheckedOrder:[],
+                checkedOrder:[],
+
+
+                selectTab:''
             }
         },
         methods:{
             //订单不通过处理
-            handleUnCheck(row){
+            handleUnCheck(index,row){
                 this.$confirm('请再次确认是否审核不通过?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -95,6 +94,8 @@
                         type: 'info',
                         message: '审核不通过'
                     });
+                    this.orderData.splice(index, 1);
+                    this.handleCheck()
                     row.checked = 2;
                 }).catch(() => {
                     this.$message({
@@ -121,7 +122,22 @@
                         message: '取消审核'
                     });
                 });
-            }
+            },
+            handleSelect(e){
+                this.selectTab =e;
+                if(e === '1')
+                    this.orderData = this.unCheckedOrder;
+                else this.orderData = this.checkedOrder;
+            },
+            handleCurrentChange(index){
+                this.initOrder(index);
+            },
+            initOrder(index){
+                if(this.selectTab === '1')
+                    this.orderData = this.unCheckedOrder[index];
+                else
+                    this.orderData =this.checkedOrder[index];
+            },
         }
     }
 </script>

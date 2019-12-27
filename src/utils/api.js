@@ -19,7 +19,7 @@ export const logout = params => {
 * if error
 * return "用户名或密码不合法"
 * success return 用户信息
-* */
+* */    
 export const register = params => {
     return service.post('/register', params)
 }

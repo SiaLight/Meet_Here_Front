@@ -8,7 +8,6 @@
                     placeholder="请键入关键字搜索相关订单">
             </el-input>
         </div>
-
         <!--遍历表格-->
         <div style="margin-top: 20px" class="orderData">
         <el-table
@@ -20,27 +19,37 @@
             <el-table-column
                     type="index"
                     label="序号"
-                    width="80">
+                    width="50">
             </el-table-column>
             <el-table-column
                     prop="user"
                     label="用户"
-                    width="160">
+                    width="80">
             </el-table-column>
             <el-table-column
                     prop="stadium"
                     label="场馆"
-                    width="180">
+                    width="100">
             </el-table-column>
             <el-table-column
                     prop="site"
                     label="场地"
-                    width="150">
+                    width="100">
             </el-table-column>
             <el-table-column
-                    prop="time"
-                    label="时间"
-                    width="220">
+                    prop="rent"
+                    label="租金"
+                    width="80">
+            </el-table-column>
+            <el-table-column
+                    prop="startTime"
+                    label="开始日期"
+                    width="160">
+            </el-table-column>
+            <el-table-column
+                    prop="endTime"
+                    label="结束日期"
+                    width="160">
             </el-table-column>
             <el-table-column
                     prop="state"
@@ -50,10 +59,14 @@
         </div>
         <div class="block" style="height:70px;">
             <el-pagination
+                    background
+                    class="page"
                     layout="prev, pager, next"
-                    @current-change="handleCurrentChange"
                     :current-page.sync="currentPage"
-                    :page-size="pageSize">
+                    @current-change="handleCurrentChange"
+                    :page-size="pageSize"
+                    :pager-count="5"
+                    :total="totalNum">
             </el-pagination>
         </div>
     </div>
@@ -67,97 +80,183 @@
                     user: '张同学',
                     stadium: '中北体育馆',
                     site:'场地1',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state:"通过"
                 }, {
                     user: '王老师',
                     stadium: '中北羽毛球馆',
                     site:'场地3',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state: "通过"
                 },{
                     user: '张同学',
                     stadium: '中北体育馆',
                     site:'场地1',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state:"通过"
                 }, {
                     user: '王老师',
                     stadium: '中北羽毛球馆',
                     site:'场地3',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state: "通过"
                 },{
                     user: '张同学',
                     stadium: '中北体育馆',
                     site:'场地1',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state:"通过"
                 }, {
                     user: '王老师',
                     stadium: '中北羽毛球馆',
                     site:'场地3',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state: "通过"
                 },{
                     user: '张同学',
                     stadium: '中北体育馆',
                     site:'场地1',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state:"通过"
                 }, {
                     user: '王老师',
                     stadium: '中北羽毛球馆',
                     site:'场地3',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state: "通过"
                 },{
                     user: '张同学',
                     stadium: '中北体育馆',
                     site:'场地1',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state:"通过"
                 }, {
                     user: '王老师',
                     stadium: '中北羽毛球馆',
                     site:'场地3',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state: "通过"
                 },{
                     user: '张同学',
                     stadium: '中北体育馆',
                     site:'场地1',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state:"通过"
                 }, {
                     user: '王老师',
                     stadium: '中北羽毛球馆',
                     site:'场地3',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state: "通过"
                 },{
                     user: '张同学',
                     stadium: '中北体育馆',
                     site:'场地1',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state:"通过"
                 }, {
                     user: '王老师',
                     stadium: '中北羽毛球馆',
                     site:'场地3',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state: "通过"
                 },{
                     user: '张同学',
                     stadium: '中北体育馆',
                     site:'场地1',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state:"通过"
                 }, {
                     user: '王老师',
                     stadium: '中北羽毛球馆',
                     site:'场地3',
-                    time: '2019.12.12 9:00-12:00',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
+                    state: "通过"
+                },{
+                    user: '张同学',
+                    stadium: '中北体育馆',
+                    site:'场地1',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
+                    state:"通过"
+                }, {
+                    user: '王老师',
+                    stadium: '中北羽毛球馆',
+                    site:'场地3',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
+                    state: "通过"
+                },{
+                    user: '张同学',
+                    stadium: '中北体育馆',
+                    site:'场地1',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
+                    state:"通过"
+                }, {
+                    user: '王老师',
+                    stadium: '中北羽毛球馆',
+                    site:'场地3',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
+                    state: "通过"
+                },{
+                    user: '张同学',
+                    stadium: '中北体育馆',
+                    site:'场地1',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
+                    state:"通过"
+                }, {
+                    user: '王老师',
+                    stadium: '中北羽毛球馆',
+                    site:'场地3',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
+                    state: "通过"
+                },{
+                    user: '张同学',
+                    stadium: '中北体育馆',
+                    site:'场地1',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
+                    state:"通过"
+                }, {
+                    user: '王老师',
+                    stadium: '中北羽毛球馆',
+                    site:'场地3',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
+                    state: "通过"
+                },{
+                    user: '张同学',
+                    stadium: '中北体育馆',
+                    site:'场地1',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
+                    state:"通过"
+                }, {
+                    user: '王老师',
+                    stadium: '中北羽毛球馆',
+                    site:'场地3',
+                    startTime: '2019.12.12 9:00:00',
+                    endTime: '2019.12.12 9:00:00',
                     state: "通过"
                 }],
                 //分页

@@ -35,16 +35,27 @@
                 <el-table-column
                         prop="siteNum"
                         label="场地数目"
-                        width="200"
+                        width="120"
                         sortable>
                 </el-table-column>
                 <el-table-column
                         prop="address"
                         label="场馆地址"
-                        width="300"
+                        width="250"
                         sortable>
                 </el-table-column>
-
+                <el-table-column
+                        prop="siteDetails"
+                        label="场馆详情"
+                        width="120">
+                    <template scope="props">
+                        <el-button
+                            size="mini"
+                            type="primary"
+                            @click="checkSiteDetails(props.$index,props.row)">查看
+                        </el-button>
+                    </template>
+                </el-table-column>
                 <el-table-column
                         prop="opp"
                         label="操作">
@@ -52,7 +63,7 @@
                         <el-button
                                 size="mini"
                                 type="primary"
-                                @click="handleEdit(scope.$index, scope.row)">修改
+                                @click="handleEdit(scope.$index, scope.row)">编辑
                         </el-button>
                         <el-button
                                 size="mini"
@@ -64,9 +75,63 @@
             </el-table>
         </div>
 
-        <!-- 编辑窗口 -->
+        <!--详情窗口-->
         <el-dialog
-                siteNum="编辑"
+                title="场馆详情"
+                :visible.sync="detailsFormVisible">
+            <el-table
+                    id="detailTable"
+                    :data="siteData"
+                    ref="siteData">
+                <el-table-column
+                        type="index"
+                        label="序号"
+                        width="50">
+                </el-table-column>
+                <el-table-column
+                    prop="siteName"
+                    label="场地名称"
+                    width="80">
+                </el-table-column>
+                <el-table-column
+                        prop="siteRent"
+                        label="租金(/小时)"
+                        width="100">
+                </el-table-column>
+                <el-table-column
+                        prop="siteLocation"
+                        label="场地位置"
+                        width="150">
+                </el-table-column>
+                <el-table-column
+                    prop="siteDescription"
+                    label="场地描述"
+                    width="140">
+                </el-table-column>
+                <el-table-column
+                        prop="opp"
+                        label="操作">
+                    <template scope="props">
+                        <el-button
+                                size="mini"
+                                type="danger"
+                                @click="handleDeleteSite(props.$index,siteData )">删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div>
+                <el-button
+                        type="primary"
+                        @click="addDetailRow()"
+                >+ 添加场地</el-button>
+                <el-button @click="cancel()">确认</el-button>
+            </div>
+        </el-dialog>
+
+        <!-- 编辑场馆窗口 -->
+        <el-dialog
+                title="编辑场馆信息"
                 :visible.sync="editFormVisible">
             <el-form
                     :model="editForm"
@@ -100,7 +165,6 @@
                 </el-form-item>
 
             </el-form>
-
             <div>
                 <el-button @click="cancel()">取消</el-button>
                 <el-button
@@ -109,12 +173,11 @@
                         :loading="addLoading"
                 >确定</el-button>
             </div>
-
         </el-dialog>
 
-        <!-- 发布窗口 -->
+        <!-- 添加场馆窗口 -->
         <el-dialog
-                siteNum="发布"
+                title="添加场馆"
                 :visible.sync="addFormVisible">
             <el-form
                     :model="addForm"
@@ -124,17 +187,17 @@
                         :label-width="formLabelWidth">
                     <el-input
                             v-model="addForm.stadium"
-                            placeholder="请输入场馆名字"
+                            placeholder="请输入场馆名称"
                             autocomplete="off">
                     </el-input>
                 </el-form-item>
 
                 <el-form-item
-                        label="场地数目"
+                        label="场地数量"
                         :label-width="formLabelWidth">
                     <el-input
                             v-model="addForm.siteNum"
-                            placeholder="请输入场地数目"
+                            placeholder="请输入场地数量"
                             autocomplete="off">
                     </el-input>
                 </el-form-item>
@@ -159,10 +222,77 @@
                 >确定</el-button>
             </div>
         </el-dialog>
+
+        <!-- 添加场地窗口 -->
+        <el-dialog
+                title="添加场地"
+                :visible.sync="detailsAddFormVisible">
+            <el-form
+                    :model="detailsAddForm"
+                    ref="detailsAddForm">
+                <el-form-item
+                        label="场地名称"
+                        :label-width="formLabelWidth">
+                    <el-input
+                            v-model="detailsAddForm.siteName"
+                            placeholder="请输入场地名称"
+                            autocomplete="off">
+                    </el-input>
+                </el-form-item>
+                <el-form-item
+                        label="场地租金"
+                        :label-width="formLabelWidth">
+                    <el-input
+                            v-model="detailsAddForm.siteRent"
+                            placeholder="请输入场地每小时租金"
+                            autocomplete="off">
+                    </el-input>
+                </el-form-item>
+                <el-form-item
+                        label="场地数量"
+                        :label-width="formLabelWidth">
+                    <el-input
+                            v-model="detailsAddForm.siteLocation"
+                            placeholder="请输入场地位置"
+                            autocomplete="off">
+                    </el-input>
+                </el-form-item>
+                <el-form-item
+                        label="场地描述"
+                        :label-width="formLabelWidth">
+                    <el-input
+                            v-model="detailsAddForm.siteDescription"
+                            type="textarea"
+                            placeholder="请简要描述该场地"
+                            autocomplete="off">
+                    </el-input>
+                </el-form-item>
+            </el-form>
+            <div>
+                <el-button @click="cancel()">取消</el-button>
+                <el-button
+                        type="primary"
+                        @click="submitAddDetailRow()"
+                        :loading="addLoading"
+                >确定</el-button>
+            </div>
+        </el-dialog>
+
+        <el-pagination
+                background
+                class="page"
+                layout="prev, pager, next"
+                :current-page.sync="currentPage"
+                @current-change="handleCurrentChange"
+                :page-size="pageSize"
+                :pager-count="5"
+                :total="totalNum">
+        </el-pagination>
     </div>
 </template>
 
 <script>
+    import  utils from '../../utils'
 
     var _index; //定义一个全局变量，以获取行数据的行号
     export default {
@@ -170,12 +300,22 @@
             return {
                 checked: true,
                 stadiumData: [],
+                siteData:[],
                 formLabelWidth: '120px',
-                editFormVisible: false,//是否显示编辑窗口
+                detailsFormVisible:false,//是否显示场馆详情窗口
+                editFormVisible: false,//是否显示编辑场馆窗口
                 editForm: [],
-                addFormVisible: false,//是否显示新增窗口
+                addFormVisible: false,//是否显示新增场馆窗口
                 addLoading: false,
                 addForm: [],
+                detailsAddFormVisible:false,//是否显示新增场地窗口
+                detailsAddForm:[],
+
+                //分页值
+                activeIndex: '1',
+                totalNum: 0,
+                pageSize: 2,
+                currentPage:1,
 
                 //日期
                 pickerOptions: {
@@ -188,12 +328,11 @@
         methods: {
             //获取数据
             getData() {
-                var url = 'static/table.json';
-                this.$http.get(url).then((data) => {
-                    console.log(data)
-                    this.stadiumData = data.body;
-                }).catch((err) => {
-                    console.log(err)
+                utils.request({
+                    invoke: utils.api.getStadium,
+                    params: {
+
+                    }
                 })
             },
 
@@ -202,8 +341,8 @@
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
                 _index = index;
-                // console.log(index)
-                // console.log(_index)
+                console.log(index, row);
+                console.log(_index, row);
                 //取到这一栏的值，也就是明白是在那一栏进行操作，从而将编辑后的数据存到表格中
             },
             //保存编辑
@@ -215,7 +354,7 @@
                 this.editFormVisible = false;
             },
 
-            //新增数据
+            //新增场馆数据
             addRow() {
                 this.addFormVisible = true;
                 this.addForm = {
@@ -224,7 +363,18 @@
                     address: '',
                 }
             },
-            //将新增的数据添加到表格中
+            //新增场地数据
+            addDetailRow(){
+                this.detailsAddFormVisible=true;
+                this.detailsAddForm = {
+                    siteName:'',
+                    siteRent:'',
+                    siteLocation:'',
+                    siteDescription:'',
+                }
+            },
+
+            //将新增的场馆数据添加到表格中
             submitAddRow() {
                 this.stadiumData = this.stadiumData || []
                 this.stadiumData.push({
@@ -235,14 +385,28 @@
                 //storage.set('url', this.url);
                 this.addFormVisible = false
             },
+            //将新增的场地数据加到表格中
+            submitAddDetailRow(){
+                this.siteData = this.siteData||[]
+                this.siteData.push({
+                    siteName:this.detailsAddForm.siteName,
+                    siteRent:this.detailsAddForm.siteRent,
+                    siteLocation:this.detailsAddForm.siteLocation,
+                    siteDescription:this.detailsAddForm.siteDescription,
+                })
+                //storage.set('url', this.url);
+                this.detailsAddFormVisible=false
+            },
+
             cancel() {
                 this.addFormVisible = false;
                 this.editFormVisible = false;
+                this.detailsFormVisible=false;
+                this.detailsAddFormVisible=false;
             },
-
-            //删除数据
+            //删除场馆数据
             handleDelete(index, row) {
-                this.$confirm('此操作将永久删除该场地, 是否继续?', '提示', {
+                this.$confirm('此操作将永久删除该场馆, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -260,6 +424,32 @@
                     })
                 })
             },
+            //删除场地数据
+            handleDeleteSite(index,row){
+                this.$confirm('此操作将永久删除该场地, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.siteData.splice(index, 1)
+                    // storage.set('siteData', this.siteData)
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功',
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'error',
+                        message: '取消删除',
+                    })
+                })
+
+            },
+
+            //查看详情
+            checkSiteDetails(index,row){
+                this.detailsFormVisible=true;
+            }
         },
         mounted() {
             this.getData();
