@@ -1,6 +1,6 @@
 var path = require("path")
 var webpack = require("webpack")
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+// var ExtractTextPlugin = require('extract-text-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 function resolve(dir) {
  
@@ -40,13 +40,14 @@ var webpackConfig = {
                 }]
             },
  
-            // css loader
+           // css loader
             {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    use: 'css-loader',
-                    fallback: 'vue-style-loader'
-                })
+                use:['vue-style-loader','css-loader']
+                // use: {
+                //     use: 'css-loader',
+                //     fallback: 'vue-style-loader'
+                // }
             },
  
             // img loader
