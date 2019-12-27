@@ -5,11 +5,11 @@
             <el-input
                     v-model="search"
                     style="display: inline-block;width:100%"
-                    placeholder="请键入关键字搜索相关订单">
+                    placeholder="请根据场馆/场地/租金/开始日期关键字搜索相关订单">
             </el-input>
         </div>
-        <!--遍历表格-->
-        <div style="margin-top: 20px" class="orderData">
+        <!--表格-->
+        <div style="margin-top: 20px" >
         <el-table
                 ref="orderTable"
                 :data="tables"
@@ -19,22 +19,22 @@
             <el-table-column
                     type="index"
                     label="序号"
-                    width="50">
+                    width="55">
             </el-table-column>
             <el-table-column
-                    prop="user"
+                    prop="user.username"
                     label="用户"
-                    width="80">
+                    width="100">
             </el-table-column>
             <el-table-column
-                    prop="stadium"
+                    prop="stadiumName"
                     label="场馆"
-                    width="100">
+                    width="150">
             </el-table-column>
             <el-table-column
-                    prop="site"
+                    prop="siteName"
                     label="场地"
-                    width="100">
+                    width="120">
             </el-table-column>
             <el-table-column
                     prop="rent"
@@ -44,241 +44,54 @@
             <el-table-column
                     prop="startTime"
                     label="开始日期"
-                    width="160">
+                    width="200">
             </el-table-column>
             <el-table-column
                     prop="endTime"
-                    label="结束日期"
-                    width="160">
+                    label="结束日期">
             </el-table-column>
-            <el-table-column
-                    prop="state"
-                    label="审核状态">
-            </el-table-column>
-
         </el-table>
         </div>
-
             <el-pagination
                     background
                     class="page"
-                    layout="prev, pager, next"
+                    layout="total,prev, pager, next"
                     :current-page.sync="currentPage"
                     @current-change="handleCurrentChange"
                     :page-size="pageSize"
                     :pager-count="5"
                     :total="totalNum">
             </el-pagination>
-
     </div>
 </template>
-<script type="es6">
+<script>
+    import  utils from '../../utils'
+
     export default {
 
         data() {
             return {
-                order: [{
-                    user: '张同学',
-                    stadium: '中北体育馆',
-                    site:'场地1',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state:"通过"
-                }, {
-                    user: '王老师',
-                    stadium: '中北羽毛球馆',
-                    site:'场地3',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state: "通过"
-                },{
-                    user: '张同学',
-                    stadium: '中北体育馆',
-                    site:'场地1',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state:"通过"
-                }, {
-                    user: '王老师',
-                    stadium: '中北羽毛球馆',
-                    site:'场地3',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state: "通过"
-                },{
-                    user: '张同学',
-                    stadium: '中北体育馆',
-                    site:'场地1',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state:"通过"
-                }, {
-                    user: '王老师',
-                    stadium: '中北羽毛球馆',
-                    site:'场地3',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state: "通过"
-                },{
-                    user: '张同学',
-                    stadium: '中北体育馆',
-                    site:'场地1',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state:"通过"
-                }, {
-                    user: '王老师',
-                    stadium: '中北羽毛球馆',
-                    site:'场地3',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state: "通过"
-                },{
-                    user: '张同学',
-                    stadium: '中北体育馆',
-                    site:'场地1',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state:"通过"
-                }, {
-                    user: '王老师',
-                    stadium: '中北羽毛球馆',
-                    site:'场地3',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state: "通过"
-                },{
-                    user: '张同学',
-                    stadium: '中北体育馆',
-                    site:'场地1',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state:"通过"
-                }, {
-                    user: '王老师',
-                    stadium: '中北羽毛球馆',
-                    site:'场地3',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state: "通过"
-                },{
-                    user: '张同学',
-                    stadium: '中北体育馆',
-                    site:'场地1',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state:"通过"
-                }, {
-                    user: '王老师',
-                    stadium: '中北羽毛球馆',
-                    site:'场地3',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state: "通过"
-                },{
-                    user: '张同学',
-                    stadium: '中北体育馆',
-                    site:'场地1',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state:"通过"
-                }, {
-                    user: '王老师',
-                    stadium: '中北羽毛球馆',
-                    site:'场地3',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state: "通过"
-                },{
-                    user: '张同学',
-                    stadium: '中北体育馆',
-                    site:'场地1',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state:"通过"
-                }, {
-                    user: '王老师',
-                    stadium: '中北羽毛球馆',
-                    site:'场地3',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state: "通过"
-                },{
-                    user: '张同学',
-                    stadium: '中北体育馆',
-                    site:'场地1',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state:"通过"
-                }, {
-                    user: '王老师',
-                    stadium: '中北羽毛球馆',
-                    site:'场地3',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state: "通过"
-                },{
-                    user: '张同学',
-                    stadium: '中北体育馆',
-                    site:'场地1',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state:"通过"
-                }, {
-                    user: '王老师',
-                    stadium: '中北羽毛球馆',
-                    site:'场地3',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state: "通过"
-                },{
-                    user: '张同学',
-                    stadium: '中北体育馆',
-                    site:'场地1',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state:"通过"
-                }, {
-                    user: '王老师',
-                    stadium: '中北羽毛球馆',
-                    site:'场地3',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state: "通过"
-                },{
-                    user: '张同学',
-                    stadium: '中北体育馆',
-                    site:'场地1',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state:"通过"
-                }, {
-                    user: '王老师',
-                    stadium: '中北羽毛球馆',
-                    site:'场地3',
-                    startTime: '2019.12.12 9:00:00',
-                    endTime: '2019.12.12 9:00:00',
-                    state: "通过"
-                }],
+                order:[],
                 //分页
-                    pageSize: 10, //每页条数,  默认10条
+                    pageSize: 8,
                     currentPage:1,
-                    tempList:[],
+                    totalNum:0,
 
                 search:''
             }
         },
-        mounted(){
-            this.init() //页面内初始加载就调用这个函数
-        },
 
         computed:{
             tables(){
-                const search=this.search
+                const search=this.search;
                 if(search){
+                    //根据关键字模糊搜索，暂时不能根据username搜索，因为username是一个复合参数user.username
                     return this.order.filter(data=>{
                         return Object.keys(data).some(key=>{
-                            return String(data[key]).toLowerCase().indexOf(search)>-1
+                            if(key==="user.username"){
+
+                            }
+                            return String(data[key]).toLowerCase().indexOf(search) > -1
                         })
                     })
                 }
@@ -286,31 +99,31 @@
             }
         },
 
+        mounted(){
+            this.initPage(this.currentPage);
+        },
+
         methods:{
-            init(){
+            initPage(current){
                     utils.request({
-                        invoke: utils.api.getOrder,
+                        invoke: utils.api.listOrder,
                         params:{
-                            pageSize:10,
-                            pageNum:1
+                            status:1,
+                            pageSize:this.pageSize,
+                            pageNum:current
                         }
                     }).then(res =>{
-                        console.log("第一次获取");
                         console.log(res);
                         this.order = res.data;
-                        this.totalRecords = res.total;
-                        this.initPage(this.currentPage);
+                        this.totalNum = res.total;
+                        for(let i=0;i<this.tables.length;i++){
+                            this.order[i].startTime=this.order[i].startTime.replace("T"," ");
+                            this.order[i].endTime=this.order[i].endTime.replace("T"," ");
+                        }
                     })
             },
-            handleCurrentChange(list,currentPage) {
-                let from=(currentPage-1)*this.pageSize;
-                let to=currentPage*this.pageSize;
-                this.tempList=[];
-                for(;from<to;from++){
-                    if(list[from]){
-                        this.tempList.push(list[from]);
-                    }
-                }
+            handleCurrentChange() {
+                this.initPage(this.currentPage);
             },
         }
     }
@@ -321,9 +134,4 @@
         bottom: 30px;
         left: 50%;
     }
-    .sear{
-        float: left;
-        margin-bottom: 20px;
-    }
-
 </style>

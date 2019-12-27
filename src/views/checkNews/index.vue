@@ -67,6 +67,16 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <el-pagination
+                    background
+                    class="page"
+                    layout="total,prev, pager, next"
+                    :current-page.sync="currentPage"
+                    @current-change="handleCurrentChange"
+                    :page-size="pageSize"
+                    :pager-count="5"
+                    :total="totalNum">
+            </el-pagination>
         </div>
 
         <!-- 编辑窗口 -->
