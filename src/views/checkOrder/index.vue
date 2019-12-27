@@ -62,6 +62,16 @@
             </template>
         </el-table-column>
     </el-table>
+        <el-pagination
+                background
+                class="page"
+                layout="prev, pager, next"
+                :current-page.sync="currentPage"
+                @current-change="handleCurrentChange"
+                :page-size="pageSize"
+                :pager-count="5"
+                :total="totalNum">
+        </el-pagination>
     </div>
 </template>
 
@@ -77,12 +87,55 @@
                 orderData:[],
                 unCheckedOrder:[],
                 checkedOrder:[],
-
+                oldOrder:{},
 
                 selectTab:''
             }
         },
+        mounted:function () {
+            this.loadOrder();
+        },
         methods:{
+            //数据导入
+            loadOrder(state){
+                utils.request({
+                    invoke: utils.api.listOrder,
+                    params:{
+                        status: state,
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize
+                    }
+                }).then(res =>{
+                    console.log(res);
+                    this.totalNum=res.total;
+                    if(state===0){
+                        this.unCheckedOrder=res.data;
+                    }
+                    else{
+                        this.checkedOrder = res.data;
+                    }
+                    this.$message('导入数据成功');
+                })
+            },
+            //分页处理
+            handleCurrentChange(currentPage,index){
+                this.initOldOrder(index);
+                this.currentPage = currentPage;
+                this.orderData[index].checked = this.oldOrder.checked;
+            },
+            initOldOrder(index){
+                if(this.selectTab === '1')
+                    this.oldOrder = this.unCheckedOrder[index];
+                else
+                    this.oldOrder =this.checkedOrder[index];
+            },
+            handleSelect(e){
+                this.selectTab =e;
+                if(e === '1')
+                    this.orderData = this.unCheckedOrder;
+                else this.orderData = this.checkedOrder;
+            },
+
             //订单不通过处理
             handleUnCheck(index,row){
                 this.$confirm('请再次确认是否审核不通过?', '提示', {
@@ -123,21 +176,8 @@
                     });
                 });
             },
-            handleSelect(e){
-                this.selectTab =e;
-                if(e === '1')
-                    this.orderData = this.unCheckedOrder;
-                else this.orderData = this.checkedOrder;
-            },
-            handleCurrentChange(index){
-                this.initOrder(index);
-            },
-            initOrder(index){
-                if(this.selectTab === '1')
-                    this.orderData = this.unCheckedOrder[index];
-                else
-                    this.orderData =this.checkedOrder[index];
-            },
+
+
         }
     }
 </script>

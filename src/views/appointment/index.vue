@@ -192,7 +192,6 @@
                            this.checkedOrder[i].startTime=this.checkedOrder[i].startTime.replace("T"," ");
                            this.checkedOrder[i].endTime=this.checkedOrder[i].endTime.replace("T"," ");
                        }
-
                     }
                     else
                     {this.unCheckedOrder = res.data;

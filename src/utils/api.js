@@ -232,8 +232,8 @@ export const userUpdateOrder = params => {
 *  @param   orderId,status,{pageNum,pageSize}
 * 管理员根据场地查看订单
 * */
-export const siteListOrder = params => {
-    return service.post('/order/stadium/list', params)
+export const listOrder = params => {
+    return service.post('/order/list', params)
 }
 /*
 *  @param  status,{pageNum,pageSize}

@@ -2,16 +2,11 @@ module.exports = {
     lintOnSave: false,
     configureWebpack: {},
     devServer: {
-        host: "localhost",
-        port: 8080,
-
         proxy: {
-            "server":{
+            "/api":{
                 target:"http://localhost:8082",
-                ws:true,
-                changeOrigin: true,
                 pathRewrite:{
-                    '^/server':''
+                    '^/api':''
                 }
             }
         }
