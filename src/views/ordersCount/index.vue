@@ -22,7 +22,7 @@
                     width="55">
             </el-table-column>
             <el-table-column
-                    prop="user.username"
+                    prop="username"
                     label="用户"
                     width="100">
             </el-table-column>
@@ -85,7 +85,6 @@
             tables(){
                 const search=this.search;
                 if(search){
-                    //根据关键字模糊搜索，暂时不能根据username搜索，因为username是一个复合参数user.username
                     return this.order.filter(data=>{
                         return Object.keys(data).some(key=>{
                             if(key==="user.username"){

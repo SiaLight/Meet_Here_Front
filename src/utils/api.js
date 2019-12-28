@@ -259,10 +259,17 @@ export const getOrder = params => {
 /*comments*/
 /*
 *  @param  pageParams
-* 获取所有评论
+* 根据场地获取所有评论
 * */
 export const getComments = params => {
     return service.post('/site/comment/getcomments', params)
+}
+/*
+*  @param  pageParams
+* 根据获取所有评论
+* */
+export const getCommentsList = params=>{
+    return service.post('/site/comment/List',params)
 }
 /*
 *  @param  CommentPublishParam

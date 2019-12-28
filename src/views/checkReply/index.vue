@@ -15,34 +15,34 @@
             element-loading-text = "数据正在加载中"
             element-loading-spinner = "el-icon-loading">
         <el-table-column
-                prop="name"
-                label="姓名"
+                prop="username"
+                label="用户姓名"
                 width="100">
         </el-table-column>
         <el-table-column
-                prop="des"
+                prop="content"
                 label="内容"
                 width="220">
         </el-table-column>
         <el-table-column
-                prop="stadium"
+                prop="stadium.name"
                 label="场馆"
                 width="120">
         </el-table-column>
         <el-table-column
-                prop="site"
+                prop="site.name"
                 label="场地"
                 width="120">
         </el-table-column>
         <el-table-column
-                prop="time"
+                prop="createTime"
                 label="留言时间"
                 width="180">
         </el-table-column>
         <el-table-column label="审核状态">
             <template slot-scope="scope">
-                <span v-if="scope.row.status==1">已发布</span>
-                <span v-else-if="scope.row.status==2">已忽略</span>
+                <span v-if="scope.row.status===1">已发布</span>
+                <span v-else-if="scope.row.status===2">已忽略</span>
                 <span v-else>
                     <el-button
                             @click="handleCheck(scope.row)"
@@ -81,7 +81,6 @@
         data() {
             return {
                 //分页参数
-                activeIndex:'1',
                 totalNum: 0,
                 pageSize: 8,
                 currentPage:1,
@@ -100,15 +99,15 @@
         },
         mounted(){
             //初始化所有数据
-            this.loadData(0)
-            this.loadData(1)
-            this.loadData(2)
+            this.loadData(0);
+            this.loadData(1);
+            this.loadData(2);
         },
         methods:{
             loadData(state){
                 this.pictLoading=true;
                 utils.request({
-                    invoke: utils.api.auditComment,
+                    invoke: utils.api.getCommentsList,
                     params:{
                         status: state,
                         pageNum: this.currentPage,
@@ -174,7 +173,7 @@
                         invoke: utils.api.auditComment,
                         params:{
                             commmentId:row.id,
-                            auditStatus:2
+                            auditOption:2
                         }
                     }).then(res=>{
                         console.log(res);
@@ -202,7 +201,7 @@
                         invoke: utils.api.auditComment,
                         params:{
                             commmentId:row.id,
-                            auditStatus:1
+                            auditOption:1
                         }
                     }).then(res=>{
                         console.log(res);

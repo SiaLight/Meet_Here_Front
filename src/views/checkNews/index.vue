@@ -291,24 +291,26 @@
                 if(this.addForm.title===''||this.addForm.content===''){
                     this.$message.error('新增的内容每一项都不准为空');
                 }
-                this.newsData = this.newsData || [];
-                this.newsData.push({
-                    title: this.addForm.title,
-                    content: this.addForm.content,
-                    date: this.addForm.date,
-                });
-                utils.request({
-                    invoke: utils.api.publishNews,
-                    params:{
-                        title:this.addForm.title,
-                        content:this.addForm.content,
-                        image:null,
-                    }
-                }).then(res =>{
-                    console.log(res);
-                    this.addFormVisible = false;
-                    this.loadData(this.currentPage)
-                })
+                else{
+                    this.newsData = this.newsData || [];
+                    this.newsData.push({
+                        title: this.addForm.title,
+                        content: this.addForm.content,
+                        date: this.addForm.date,
+                 });
+                    utils.request({
+                        invoke: utils.api.publishNews,
+                        params:{
+                            title:this.addForm.title,
+                            content:this.addForm.content,
+                            image:null,
+                        }
+                    }).then(res =>{
+                        console.log(res);
+                        this.addFormVisible = false;
+                        this.loadData(this.currentPage)
+                    })
+                }
             },
             cancel() {
                 this.addFormVisible = false;
