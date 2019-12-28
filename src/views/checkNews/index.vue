@@ -20,7 +20,10 @@
                     :data="newsData"
                     ref="newsData"
                     height="600"
-                    border>
+                    border
+                    element-loading-background = "rgba(0, 0, 0, 0.5)"
+                    element-loading-text = "数据正在加载中"
+                    element-loading-spinner = "el-icon-loading">
                 <el-table-column
                         type="index"
                         label="序号"
@@ -45,7 +48,7 @@
                         sortable>
                 </el-table-column>
                 <el-table-column
-                        prop="date"
+                        prop="createTime"
                         label="新闻发布时间"
                         width="180"
                         sortable>
@@ -62,7 +65,7 @@
                         <el-button
                                 size="mini"
                                 type="danger"
-                                @click="handleDelete(scope.$index,newsData )">删除
+                                @click="handleDelete(scope.$index,scope.row)">删除
                         </el-button>
                     </template>
                 </el-table-column>
@@ -87,11 +90,12 @@
                     :model="editForm"
                     ref="editForm">
                 <el-form-item
-                        label="姓名"
+                        label="新闻作者"
                         :label-width="formLabelWidth">
                     <el-input
                             v-model="editForm.author"
-                            autocomplete="off">
+                            autocomplete="off"
+                            disabled>
                     </el-input>
                 </el-form-item>
 
@@ -117,14 +121,13 @@
                 <el-form-item
                         label="新闻发布时间"
                         :label-width="formLabelWidth">
-                    <el-date-picker
-                            v-model="editForm.date"
-                            type="date"
-                            placeholder="选择日期"
-                            format="yyyy 年 MM 月 dd 日"
-                            value-format="yyyy-MM-dd">
-                    </el-date-picker>
+                    <el-input
+                            v-model="editForm.createTime"
+                            autocomplete="off"
+                            disabled>
+                    </el-input>
                 </el-form-item>
+
             </el-form>
 
             <div>
@@ -146,16 +149,6 @@
                     :model="addForm"
                     ref="addForm">
                 <el-form-item
-                        label="作者"
-                        :label-width="formLabelWidth">
-                    <el-input
-                            v-model="addForm.author"
-                            placeholder="请输入您的名字"
-                            autocomplete="off">
-                    </el-input>
-                </el-form-item>
-
-                <el-form-item
                         label="新闻标题"
                         :label-width="formLabelWidth">
                     <el-input
@@ -175,18 +168,6 @@
                             autocomplete="off">
                     </el-input>
                 </el-form-item>
-                <!--暂时设置为可以自行选择日期-->
-                <el-form-item
-                        label="新闻发布时间"
-                        :label-width="formLabelWidth">
-                    <el-date-picker
-                            v-model="addForm.date"
-                            type="date"
-                            placeholder="选择日期"
-                            format="yyyy 年 MM 月 dd 日"
-                            value-format="yyyy-MM-dd">
-                    </el-date-picker>
-                </el-form-item>
             </el-form>
             <div>
                 <el-button @click="cancel()">取消</el-button>
@@ -201,20 +182,33 @@
 </template>
 
 <script>
+    import  utils from '../../utils'
 
-    var _index; //定义一个全局变量，以获取行数据的行号
+    let _index; //定义一个全局变量，以获取行数据的行号
+    let tempId;//定义一个全局变量，以获取行数据的id
+
     export default {
         data() {
             return {
+                //分页参数
+                totalNum: 0,
+                pageSize: 8,
+                currentPage:1,
+                pictLoading:true,
+
+                //新闻存储数组
                 checked: true,
                 newsData: [],
                 formLabelWidth: '120px',
+
                 editFormVisible: false,//是否显示编辑窗口
                 editForm: [],
+
                 addFormVisible: false,//是否显示新增窗口
                 addLoading: false,
-                addForm: [],
-                //日期
+                addForm:[],
+
+                //日期选择应大于当前时间
                 pickerOptions: {
                     disabledDate(time) {
                         return time.getTime() > Date.now();
@@ -222,15 +216,29 @@
                 },
             }
         },
+        mounted() {
+            this.loadData(this.currentPage);
+        },
         methods: {
-            //获取数据
-            getData() {
-                var url = 'static/table.json';
-                this.$http.get(url).then((data) => {
-                    console.log(data)
-                    this.newsData = data.body;
-                }).catch((err) => {
-                    console.log(err)
+            //分页处理
+            handleCurrentChange() {
+                this.loadData(this.currentPage);
+            },
+            //获取新闻数据
+            loadData(current){
+                utils.request({
+                    invoke: utils.api.listNews,
+                    params:{
+                        pageSize:this.pageSize,
+                        pageNum:current
+                    }
+                }).then(res =>{
+                    console.log(res);
+                    this.newsData = res.data;
+                    this.totalNum = res.total;
+                    for(let i=0;i<this.tables.length;i++){
+                        this.newsData[i].createTime=this.newsData[i].createTime.replace("T"," ");
+                    }
                 })
             },
 
@@ -239,59 +247,94 @@
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
                 _index = index;
-                // console.log(index)
-                // console.log(_index)
-                //取到这一栏的值，也就是明白是在那一栏进行操作，从而将编辑后的数据存到表格中
+                console.log(index);
             },
             //保存编辑
             submitEditRow() {
-                var editData = _index;
+                let editData = _index;
+                if(this.editForm.author===''||this.editForm.title===''||this.editForm.content===''){
+                    this.$message.error('修改后的内容每一项都不准为空')
+                }
+                else{
                 this.newsData[editData].author = this.editForm.author;
                 this.newsData[editData].title = this.editForm.title;
                 this.newsData[editData].content = this.editForm.content;
-                this.newsData[editData].date = this.editForm.date;
-                this.editFormVisible = false;
+                utils.request({
+                    invoke: utils.api.updateNews,
+                    params:{
+                        id:this.newsData[editData].id,
+                        title: this.newsData[editData].author,
+                        content: this.newsData[editData].content,
+                        image:null
+                    }
+                }).then(res =>{
+                    this.$message.success('新闻修改成功');
+                    this.editFormVisible = false;
+                    console.log(_index);
+                    this.loadData();
+                }).catch(res=>{
+                    this.$message.error('新闻修改失败');
+                })
+                }
             },
 
             //新增数据
-            addRow() {
+            addRow (){
                 this.addFormVisible = true;
-                this.addForm = {
-                    author: '',
-                    title: '',
-                    content: '',
-                    date: ''
+                this.addForm={
+                    title:'',
+                    content:'',
                 }
             },
             //将新增的数据添加到表格中
             submitAddRow() {
-                this.newsData = this.newsData || []
+                if(this.addForm.title===''||this.addForm.content===''){
+                    this.$message.error('新增的内容每一项都不准为空');
+                }
+                this.newsData = this.newsData || [];
                 this.newsData.push({
-                    author: this.addForm.author,
                     title: this.addForm.title,
                     content: this.addForm.content,
                     date: this.addForm.date,
+                });
+                utils.request({
+                    invoke: utils.api.publishNews,
+                    params:{
+                        title:this.addForm.title,
+                        content:this.addForm.content,
+                        image:null,
+                    }
+                }).then(res =>{
+                    console.log(res);
+                    this.addFormVisible = false;
+                    this.loadData(this.currentPage)
                 })
-                //storage.set('url', this.url);
-                this.addFormVisible = false
             },
             cancel() {
                 this.addFormVisible = false;
                 this.editFormVisible = false;
+                this.loadData();
             },
 
-            //删除数据
+            //删除新闻
             handleDelete(index, row) {
                 this.$confirm('此操作将永久删除该条新闻, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.newsData.splice(index, 1)
-                    // storage.set('newsData', this.newsData)
+                    this.newsData.splice(index, 1);
                     this.$message({
                         type: 'success',
                         message: '删除成功',
+                    });
+                    utils.request({
+                        invoke: utils.api.deleteNews,
+                        params:{
+                            newsId: row.id,
+                        }
+                    }).then(res =>{
+                        console.log(res);
                     })
                 }).catch(() => {
                     this.$message({
@@ -301,9 +344,6 @@
                 })
             },
         },
-        mounted() {
-            this.getData();
-        }
     }
 </script>
 
@@ -324,5 +364,10 @@
     }
     .el-table th {
         padding: 0px;
+    }
+    .page{
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
     }
 </style>

@@ -174,7 +174,12 @@ export const deleteNews = params => {
 export const updateNews = params => {
     return service.post('/news/update', params)
 }
-
+/*
+*  @param  pageNum,pageSize
+* */
+export const listNews = params => {
+    return service.post('/news/list', params)
+}
 /*
 *  @param  newsId
 * */
