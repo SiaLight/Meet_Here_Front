@@ -7,7 +7,7 @@
     </el-menu>
 
     <el-table
-            :data="newsData"
+            :data="commentsData"
             stripe
             style="width: 100%"
             v-loading = "pictLoading"
@@ -45,14 +45,14 @@
                 <span v-else-if="scope.row.status===2">已忽略</span>
                 <span v-else>
                     <el-button
-                            @click="handleCheck(scope.row)"
+                            @click="handleCheck(scope.$index,scope.row)"
                             size="small"
                             type="primary"
                             icon="edit">
                         <span >发布</span>
                     </el-button>
                     <el-button
-                            @click="handleUnCheck(scope.row)"
+                            @click="handleUnCheck(scope.$index,scope.row)"
                             size="small"
                             type="danger"
                             icon="delete">
@@ -77,6 +77,8 @@
 </template>
 
 <script>
+    import  utils from '../../utils'
+
     export default {
         data() {
             return {
@@ -87,10 +89,10 @@
                 pictLoading:true,
 
                 //new分类数组
-                newsData: [],
-                unCheckedNewsData:[],
-                publishedNewsData:[],
-                ignoredNewsData:[],
+                commentsData: [],
+                unCheckedCommentsData:[],
+                publishedCommentsData:[],
+                ignoredCommentsData:[],
 
                 //index选择参数
                 activeIndex:'1',
@@ -117,21 +119,21 @@
                     console.log(res);
                     this.totalNum=res.total;
                     if(state===0){
-                        this.unCheckedNewsData=res.data;
-                        for(let i=0;i<this.unCheckedNewsData.length;i++){
-                            this.unCheckedNewsData[i].createTime=this.unCheckedNewsData[i].startTime.replace("T"," ");
+                        this.unCheckedCommentsData=res.data;
+                        for(let i=0;i<this.unCheckedCommentsData.length;i++){
+                            this.unCheckedCommentsData[i].createTime=this.unCheckedCommentsData[i].createTime.replace("T"," ");
                         }
                     }
                     else if(state===1){
-                        this.publishedNewsData=res.data;
-                        for(let i=0;i<this.publishedNewsData.length;i++){
-                            this.publishedNewsData[i].createTime=this.publishedNewsData[i].createTime.replace("T"," ");
+                        this.publishedCommentsData=res.data;
+                        for(let i=0;i<this.publishedCommentsData.length;i++){
+                            this.publishedCommentsData[i].createTime=this.publishedCommentsData[i].createTime.replace("T"," ");
                         }
                     }
                     else if(state===2){
-                        this.ignoredNewsData=res.data;
-                        for(let i=0;i<this.ignoredNewsData.length;i++){
-                            this.ignoredNewsData[i].createTime=this.ignoredNewsData[i].createTime.replace("T"," ");
+                        this.ignoredCommentsData=res.data;
+                        for(let i=0;i<this.ignoredCommentsData.length;i++){
+                            this.ignoredCommentsData[i].createTime=this.ignoredCommentsData[i].createTime.replace("T"," ");
                         }
                     }
                     this.pictLoading=false;
@@ -149,16 +151,16 @@
                 this.selectTab =e;
                 if(e === '1'){
                     this.loadOrder(0);
-                    this.orderData = this.unCheckedOrder;}
+                    this.commentsData = this.unCheckedCommentsData;}
                 else if(e==='2'){
                     this.loadOrder(1);
-                    this.orderData = this.checkedOrder2;}
+                    this.commentsData = this.publishedCommentsData;}
                 else if(e==='3'){
                     this.loadOrder(2);
-                    this.orderData = this.checkedOrder3;}
+                    this.commentsData = this.ignoredCommentsData;}
             },
             //留言忽略处理
-            handleUnCheck(row){
+            handleUnCheck(index,row){
                 this.$confirm('请再次确认是否忽略该留言?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -168,7 +170,7 @@
                         type: 'info',
                         message: '该留言已忽略'
                     });
-                    this.newsData.splice(index, 1);
+                    this.commentsData.splice(index, 1);
                     utils.request({
                         invoke: utils.api.auditComment,
                         params:{
@@ -186,7 +188,7 @@
                 });
             },
             //留言通过处理
-            handleCheck(row){
+            handleCheck(index,row){
                 this.$confirm('请再次确认是否使得该留言所有人可见?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -196,7 +198,7 @@
                         type: 'success',
                         message: '留言已发布'
                     });
-                    this.newsData.splice(index, 1);
+                    this.commentsData.splice(index, 1);
                     utils.request({
                         invoke: utils.api.auditComment,
                         params:{
