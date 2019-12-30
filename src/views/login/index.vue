@@ -112,9 +112,9 @@
     .buttonDIV{
         margin-top: 20px;
     }
-    .inputDiv{
+    /* .inputDiv{
        z-index: 999;
-    }
+    } */
     .inputDiv input{
         border:0;
         background-color:transparent;
