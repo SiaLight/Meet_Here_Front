@@ -1,0 +1,98 @@
+<template>
+    <div>
+       <div v-for="item in comment " :key="item.id" class="commentBox">
+           <div class="detail">
+               <p class="time">{{item.createTime}}</p>
+           </div>
+           <div>
+           <el-row>
+               <el-col :span="20">
+                   <div class="detail">
+                   <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                          <p class="name">{{item.reviewer.username}}:</p>
+                   <P style="margin-left: 5px">{{item.content}}</P>
+                   </div>
+               </el-col>
+           </el-row>
+       </div>
+
+       </div>
+        <div class="inputBox">
+            <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 2, maxRows: 6}"
+                    placeholder="请输入评论......"
+                    v-model="conmentDetail">
+            </el-input>
+            <el-button type="danger" class="but" @click="publish">提交评论</el-button>
+        </div>
+    </div>
+</template>
+<script>
+    import  utils from '../utils'
+    export default {
+        props:{
+            comment:{
+                type: Array
+            },
+            siteId: Number
+        },
+        data(){
+            return{
+                conmentDetail:'',
+                time:''
+            }
+        },
+        methods:{
+            publish(){
+                utils.request({
+                    invoke: utils.api.publishComment,
+                    params:{
+                       siteId: this.siteId,
+                        content: this.conmentDetail
+                    }
+                }).then(res =>{
+                    console.log(res);
+                    this.$message.success('评论成功');
+                }).catch(res =>{
+                    this.$message.error('评论失败');
+                })
+            }
+        }
+    }
+</script>
+<style scoped>
+
+    .commentBox{
+        margin-left: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+
+    }
+    .detail{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    .name{
+        margin-left: 5px;
+        font-size: 14px;
+    }
+    .inputBox{
+        width:60%;
+        margin-left: 30px;
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-items: left;
+    }
+    .but{
+        margin-top: 10px;
+        width:100px;
+    }
+    .time{
+         font-size: 12px;
+        color: #909399;
+    }
+</style>
