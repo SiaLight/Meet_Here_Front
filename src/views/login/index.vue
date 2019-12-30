@@ -89,11 +89,11 @@
               }).then(res =>{
                   console.log("进入注册");
                   console.log(res);
-                  if(res.code === 102 || res.code === 104 ){
-                      this.$message(res.message);
-                  }
-                  else if(res.code === 200){
+                  if(res.code === 200){
                       this.$message.success('注册成功');
+                  }
+                  else {
+                      this.$message(res.message);
                   }
               })
           }

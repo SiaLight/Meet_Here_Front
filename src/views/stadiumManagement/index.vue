@@ -229,7 +229,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item
-                        label="场地数量"
+                        label="场地位置"
                         :label-width="formLabelWidth">
                     <el-input
                             v-model="detailsAddForm.location"
@@ -448,6 +448,7 @@
                     utils.request({
                         invoke: utils.api.createSite,
                         params:{
+                            stadiumId:tmpRow.id,
                             name: this.detailsAddForm.name,
                             rent: this.detailsAddForm.rent,
                             location: this.detailsAddForm.location,
@@ -528,6 +529,7 @@
                 this.detailsFormVisible=true;
                 this.loadSiteData(row);
                 this.detailsForm=this.siteData;
+                tmpRow=row;
             }
         },
     }
