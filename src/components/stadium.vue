@@ -3,7 +3,7 @@
                 <el-card class="box-card" >
                     <el-image
                             style="width: 100px; height: 100px"
-                            :src="item.image"></el-image>
+                            :src="require('../assets/site.jpg')"></el-image>
                     <div>
                         <P CLASS="name">{{item.name}}</P>
                         <P class="address">{{item.location }}</P>
@@ -15,6 +15,7 @@
     export default {
         data(){
             return{
+                image:'../assets/logo.png'
 
             }
         },

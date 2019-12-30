@@ -3,7 +3,6 @@
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <el-menu-item index="1">已审核订单</el-menu-item>
             <el-menu-item index="2">未审核订单</el-menu-item>
-
         </el-menu>
     <el-table
             :data="tableData"
@@ -55,6 +54,11 @@
                 </el-form>
             </template>
         </el-table-column>
+         <el-table-column
+                prop="stadiumName"
+                label="场馆"
+                width="150">
+        </el-table-column>
         <el-table-column
                 prop="siteName"
                 label="场地"
@@ -103,8 +107,10 @@
         data() {
             return {
                 activeIndex: '1',
-                totalNum: 0,
-                pageSize: 2,
+                totalNum:0,
+                totalNum1: 0,
+                totalNum2: 0,
+                pageSize: 6,
                 currentPage:1,
                 unCheckedOrder:[],
                 checkedOrder:[],
@@ -114,20 +120,27 @@
             }
         },
         methods:{
-            handleEdit(index,row) {
+       async  handleEdit(index,row) {
                 console.log(index, row);
                 let newTime1 = new Date(row.startTime);
                 let newTime2 = new Date(row.endTime);
                 let diff = newTime2.getTime() - newTime1.getTime();
                 diff = diff / (1000 * 60*60);
                 this.tableData[index].rent = diff*88;
-                this.initOldOrder(index);
-                utils.request({
+               await utils.request({
+                    invoke: utils.api.getOrder,
+                    params:{
+                        orderId: row.id
+                    }
+                }).then(res =>{
+                    this.oldOrder = res.data;
+                })
+             await   utils.request({
                     invoke: utils.api.userUpdateOrder,
                     params:{
                         orderId: row.id,
                         siteId: row.siteId,
-                        oldStartTime: this.oldOrder.startTime,
+                        oldStartTime:this.oldOrder.startTime.replace("T"," "),
                         startTime: row.startTime,
                         endTime: row.endTime
                     }
@@ -137,23 +150,28 @@
                     this.$message.error('修改失败');
                 })
             },
-            handleCancel(){
-                if(this.selectTab === '1')
-                  this.initOrder(1);
-                else
-                    this.initOrder(0);
+            handleCancel(index,row){
+                 utils.request({
+                    invoke: utils.api.getOrder,
+                    params:{
+                        orderId: row.id
+                    }
+                }).then(res =>{
+                    this.oldOrder = res.data;
+                     this.tableData[index].startTime = this.oldOrder.startTime;
+                this.tableData[index].endTime = this.oldOrder.endTime;
+                })
             },
             handleCurrentChange(index){
-                this.initOldOrder(index);
-                this.tableData[index].startTime = this.oldOrder.startTime;
-                this.tableData[index].endTime = this.oldOrder.endTime;
+             if(this.selectTab === '1')
+             { this.initOrder(1);
+             this.tableData = this.checkedOrder.slice(0);
+             }
+             else{
+                 this.initOrder(0);
+             this.tableData = this.unCheckedOrder.slice(0);
+             }
 
-            },
-            initOldOrder(index){
-               if(this.selectTab === '1')
-                   this.oldOrder = this.checkedOrder[index];
-               else
-                   this.oldOrder =this.unCheckedOrder[index];
             },
             handleDelete(index,row){
                 utils.request({
@@ -171,9 +189,18 @@
             },
             handleSelect(e){
                this.selectTab =e;
+               this.changePageNum(e);
+                this.tableData = new Array();
                if(e === '1')
-                   this.tableData = this.checkedOrder;
-                else this.tableData = this.unCheckedOrder;
+                   this.tableData = this.checkedOrder.slice(0);
+                else this.tableData =this.unCheckedOrder.slice(0);
+            },
+            changePageNum(e){
+               if(e === '1')
+                this.totalNum = this.totalNum1;
+                else
+                 this.totalNum = this.totalNum2;
+                 this.currentPage = 1;
             },
             initOrder(isCheck){
                 utils.request({
@@ -185,7 +212,10 @@
                     }
                 }).then(res =>{
                     console.log(res);
-                    this.totalNum = res.total;
+                    if(isCheck)
+                    this.totalNum1 = res.total;
+                    else
+                     this.totalNum2 = res.total;
                     if(isCheck)
                     { this.checkedOrder = res.data;
                        for(let i=0;i<this.checkedOrder.length;i++){

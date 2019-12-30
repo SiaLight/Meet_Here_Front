@@ -5,7 +5,7 @@
         <div class="detail">
            <el-row :gutter="30">
                <el-col :span="4" >
-                   <el-image :src="site.image" fit="fill" style="width: 100px;height:100px"></el-image>
+                   <el-image :src="require('../assets/site2.jpg')" fit="fill" style="width: 100px;height:100px"></el-image>
                </el-col>
                <el-col :span="14" class="detailSite" >
                    <div class="detailSite">
@@ -93,7 +93,23 @@
          goBack(){
              this.$router.go(-1);
          },
+         checkEmpty(){
+            if(this.order.startTime ==''||this.order.endTime==''){
+               this.$message('请选择相关信息。');
+               return false;
+            }
+            if(!this.$store.state.loginState)
+            {
+               this.$message.error('请先登录。');
+                return false;
+            }
+            return true;
+
+         },
          book(){
+            if( !this.checkEmpty()){
+                return ;
+            }
              utils.request({
                  invoke: utils.api.createOrder,
                  params:{
@@ -151,8 +167,6 @@
             utils.request({
                 invoke: utils.api.getComments,
                 params:{
-                    pageNum:1,
-                    pageSize:5,
                     siteId: this.$route.params.id
                 }
             }).then(res =>{
