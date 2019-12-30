@@ -1,6 +1,6 @@
 <template>
     <div>
-       <div v-for="item in comment " :key="item.id" class="commentBox">
+       <div v-for="item in commentS " :key="item.id" class="commentBox">
            <div class="detail">
                <p class="time">{{item.createTime}}</p>
            </div>
@@ -18,6 +18,7 @@
 
        </div>
         <div class="inputBox">
+             <el-button type="text" class="but" @click="more">加载更多评论...</el-button>
             <el-input
                     type="textarea"
                     :autosize="{ minRows: 2, maxRows: 6}"
@@ -40,11 +41,28 @@
         data(){
             return{
                 conmentDetail:'',
-                time:''
+                time:'',
+                commentS:[],
+                num: 1
             }
         },
         methods:{
+             checkLogin(){
+                 if(this.conmentDetail == ''){
+                     this.$message('请输入评论内容。');
+                     return false;
+                 }
+            if(!this.$store.state.loginState)
+            {
+               this.$message.error('请先登录。');
+                return false;
+            }
+            return true;
+
+         },
             publish(){
+                if(!this.checkLogin())
+                  return ;
                 utils.request({
                     invoke: utils.api.publishComment,
                     params:{
@@ -57,6 +75,11 @@
                 }).catch(res =>{
                     this.$message.error('评论失败');
                 })
+            },
+            more(){
+                this.commentS = this.comment.slice(0,2*this.num);
+                this.num++;
+
             }
         }
     }

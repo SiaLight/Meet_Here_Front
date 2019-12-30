@@ -13,7 +13,7 @@
                             <el-col :span="6">
                                 <el-image
                                         style="width: 100px; height: 100px"
-                                        :src="news.image"></el-image>
+                                        :src="require('../assets/news.jpg')"></el-image>
                             </el-col>
                            <el-col :span="15">
                                <P>{{news.content}}</P>

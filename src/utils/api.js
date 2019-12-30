@@ -248,10 +248,8 @@ export const listOrder = params => {
 export const siteListOrderByUser = params => {
     return service.post('/order/user/list', params)
 }
-/*
-*  @param  orderId
-* 管理员按用户列出订单
-* */
+
+
 export const getOrder = params => {
     return service.post('/order/get', params)
 }

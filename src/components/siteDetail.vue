@@ -5,7 +5,7 @@
         <div class="detail">
             <el-row :gutter="30">
                 <el-col :span="4" >
-                    <el-image :src="stadium.image" fit="fill" style="width: 100px;height:100px"></el-image>
+                    <el-image :src="require('../assets/site.jpg')" fit="fill" style="width: 100px;height:100px"></el-image>
                 </el-col>
                 <el-col :span="14" class="detailSite" >
                     <div class="detailSite">

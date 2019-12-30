@@ -101,6 +101,7 @@
                 }).then(res =>{
                     if(res.code === 200)
                         this.$message('修改名称成功');
+                        this.$store.state.userName = this.userInfo.name;
                 })
             },
             cancelName(){
@@ -151,6 +152,8 @@
             }).then(res =>{
                 console.log(res);
                 this.oldInfo = res.data;
+                this.userInfo.name = this.oldInfo.username;
+                this.userInfo.password = '';
                 this.userInfo.phone = this.oldInfo.telephone;
             })
         }
