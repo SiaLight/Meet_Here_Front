@@ -99,9 +99,13 @@
                         newName: this.userInfo.name
                     }
                 }).then(res =>{
+                      console.log(res);
                     if(res.code === 200)
-                        this.$message('修改名称成功');
-                        this.$store.state.userName = this.userInfo.name;
+                       {alert('修改名称成功');
+                        this.$store.state.userName = this.userInfo.name;}
+                        else
+                        alert(res.message);
+
                 })
             },
             cancelName(){
@@ -117,7 +121,10 @@
                         }
                     }).then(res => {
                         console.log(res);
-                        this.$message('修改密码成功');
+                        if(res.code === 200)
+                        alert('修改密码成功');
+                        else
+                        alert(res.message);
                     })
                 }
             },
@@ -135,7 +142,9 @@
                 }).then(res =>{
                     console.log(res);
                     if(res.code === 200)
-                        this.$message('修改电话成功');
+                        alert('修改电话成功');
+                        else
+                        alert(res.message);
                 })
             },
             cancelPhone(){

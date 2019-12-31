@@ -13,12 +13,7 @@
 </template>
 <script>
     export default {
-        data(){
-            return{
-                image:'../assets/logo.png'
-
-            }
-        },
+    
         props:{
             item:{
                 type: Object

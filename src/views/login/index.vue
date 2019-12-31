@@ -1,3 +1,4 @@
+
 <template>
     <div  class="login">
     <div class="LoginBoard">
@@ -72,7 +73,7 @@
                            this.$router.push({name:'AdminIndex'});
                    }
                    else{
-                        this.$message(res.message);
+                        alert(res.message);
                    }
                });
 
@@ -90,11 +91,11 @@
                   console.log("进入注册");
                   console.log(res);
                   if(res.code === 200){
-                      this.$message.success('注册成功');
+                      alert("注册成功");}
+                  else{
+                      alert(res.message);
                   }
-                  else {
-                      this.$message(res.message);
-                  }
+                
               })
           }
       }
@@ -112,9 +113,9 @@
     .buttonDIV{
         margin-top: 20px;
     }
-    /* .inputDiv{
+    .inputDiv{
        z-index: 999;
-    } */
+    }
     .inputDiv input{
         border:0;
         background-color:transparent;
@@ -127,5 +128,6 @@
         border-bottom: 2px solid #1E90FF;
         width: 130px
     }
+
 
 </style>
