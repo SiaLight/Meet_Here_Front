@@ -267,7 +267,7 @@ export const getComments = params => {
 * 根据获取所有评论
 * */
 export const getCommentsList = params=>{
-    return service.post('/site/comment/List',params)
+    return service.post('/site/comment/listNewComments',params)
 }
 /*
 *  @param  CommentPublishParam
