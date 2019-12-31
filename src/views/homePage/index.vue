@@ -1,10 +1,10 @@
 <template>
     <div class="home">
-        <div style="margin-top: 15px;" class="searchDiv">
+        <!-- <div style="margin-top: 15px;" class="searchDiv">
             <el-input placeholder="请输入内容" v-model="search" class="input-with-select" @change="searchChange">
                 <el-button slot="append" icon="el-icon-search"></el-button>
             </el-input>
-        </div>
+        </div> -->
         <div class="bookBox">
     </div>
         <div class="stadiumDiv" >

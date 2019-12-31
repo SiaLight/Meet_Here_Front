@@ -99,14 +99,25 @@
                         newName: this.userInfo.name
                     }
                 }).then(res =>{
+                      console.log(res);
                     if(res.code === 200)
-                        this.$message('修改名称成功');
+                       {alert('修改名称成功');
+                        this.$store.state.userName = this.userInfo.name;}
+                        else
+                        alert(res.message);
+
                 })
             },
             cancelName(){
               this.userInfo.name = this.oldInfo.username;
             },
             changePassword(){
+
+                if(this.userInfo.password === this.userInfo.newPassword)
+                {
+                     alert('新密码与原密码一样');
+                     return;
+                }
                 if(this.isSame) {
                     utils.request({
                         invoke: utils.api.updatePassword,
@@ -116,7 +127,10 @@
                         }
                     }).then(res => {
                         console.log(res);
-                        this.$message('修改密码成功');
+                        if(res.code === 200)
+                        alert('修改密码成功');
+                        else
+                        alert(res.message);
                     })
                 }
             },
@@ -134,7 +148,9 @@
                 }).then(res =>{
                     console.log(res);
                     if(res.code === 200)
-                        this.$message('修改电话成功');
+                        alert('修改电话成功');
+                        else
+                        alert(res.message);
                 })
             },
             cancelPhone(){
@@ -151,6 +167,8 @@
             }).then(res =>{
                 console.log(res);
                 this.oldInfo = res.data;
+                this.userInfo.name = this.oldInfo.username;
+                this.userInfo.password = '';
                 this.userInfo.phone = this.oldInfo.telephone;
             })
         }

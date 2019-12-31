@@ -448,7 +448,6 @@
                     utils.request({
                         invoke: utils.api.createSite,
                         params:{
-                            stadiumId:tmpRow.id,
                             name: this.detailsAddForm.name,
                             rent: this.detailsAddForm.rent,
                             location: this.detailsAddForm.location,
@@ -502,6 +501,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
+
                     this.$message({
                         type: 'success',
                         message: '删除成功',
@@ -528,7 +528,6 @@
                 this.detailsFormVisible=true;
                 this.loadSiteData(row);
                 this.detailsForm=this.siteData;
-                tmpRow=row;
             }
         },
     }

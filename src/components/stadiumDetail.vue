@@ -5,7 +5,7 @@
         <div class="detail">
            <el-row :gutter="30">
                <el-col :span="4" >
-                   <el-image :src="site.image" fit="fill" style="width: 100px;height:100px"></el-image>
+                   <el-image :src="require('../assets/site2.jpg')" fit="fill" style="width: 100px;height:100px"></el-image>
                </el-col>
                <el-col :span="14" class="detailSite" >
                    <div class="detailSite">
@@ -25,7 +25,8 @@
                             type="date"
                             placeholder="选择日期"
                             value-format="yyyy-MM-dd"
-                            style="margin-top: 5px" @change="dateChange">
+                            style="margin-top: 5px" @change="dateChange"
+                             :picker-options="pickerOptions1">
                     </el-date-picker>
                     <el-time-select
                             placeholder="起始时间"
@@ -85,7 +86,12 @@
                     startTime:'',
                     endTime:''
                 },
-                comment:[]
+                comment:[],
+                pickerOptions1: {
+           disabledDate(time) {
+            return time.getTime() < Date.now() - 8.64e7;
+          },
+        }        
             }
         },
         components:{commentUnit},
@@ -93,7 +99,23 @@
          goBack(){
              this.$router.go(-1);
          },
+         checkEmpty(){
+            if(this.order.startTime ==''||this.order.endTime==''){
+               this.$message('请选择相关信息。');
+               return false;
+            }
+            if(!this.$store.state.loginState)
+            {
+               this.$message.error('请先登录。');
+                return false;
+            }
+            return true;
+
+         },
          book(){
+            if( !this.checkEmpty()){
+                return ;
+            }
              utils.request({
                  invoke: utils.api.createOrder,
                  params:{
@@ -105,9 +127,13 @@
                  }
              }).then(res =>{
                  console.log(res);
-                 this.$message.success('预约成功');
+                 if(res.code === 200)              
+                alert('预约成功');
+                else{
+                    alert(res.message);
+                }
              }).catch(res =>{
-                 this.$message.error('预约失败');
+                 alert('预约失败');
              })
          },
          dateChange(e){
@@ -151,8 +177,6 @@
             utils.request({
                 invoke: utils.api.getComments,
                 params:{
-                    pageNum:1,
-                    pageSize:5,
                     siteId: this.$route.params.id
                 }
             }).then(res =>{
