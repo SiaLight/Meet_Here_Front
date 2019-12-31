@@ -63,7 +63,6 @@ var webpackConfig = {
             },
         ]
     },
- 
     resolve: {
         extensions: ['.js', '.vue', '.json'],
         alias: {

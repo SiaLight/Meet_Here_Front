@@ -6,6 +6,7 @@ import store from './store'
 Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
+
   /* 路由发生变化修改页面meta */
   if(to.meta.content){
     let head = document.getElementsByTagName('head');
@@ -19,6 +20,7 @@ router.beforeEach((to, from, next) => {
   }
   next()
 });
+
 
 new Vue({
   render: h => h(App),

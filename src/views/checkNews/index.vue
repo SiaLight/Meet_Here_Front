@@ -30,7 +30,7 @@
                         width="50">
                 </el-table-column>
                 <el-table-column
-                        prop="author"
+                        prop="writer"
                         label="作者"
                         width="100"
                         sortable>
@@ -93,7 +93,7 @@
                         label="新闻作者"
                         :label-width="formLabelWidth">
                     <el-input
-                            v-model="editForm.author"
+                            v-model="editForm.writer"
                             autocomplete="off"
                             disabled>
                     </el-input>
@@ -263,7 +263,7 @@
                     invoke: utils.api.updateNews,
                     params:{
                         id:this.newsData[editData].id,
-                        title: this.newsData[editData].author,
+                        title: this.newsData[editData].title,
                         content: this.newsData[editData].content,
                         image:null
                     }

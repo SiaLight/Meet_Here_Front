@@ -1,3 +1,4 @@
+
 <template>
     <div  class="login">
     <div class="LoginBoard">
@@ -127,5 +128,6 @@
         border-bottom: 2px solid #1E90FF;
         width: 130px
     }
+
 
 </style>
