@@ -112,6 +112,12 @@
               this.userInfo.name = this.oldInfo.username;
             },
             changePassword(){
+
+                if(this.userInfo.password === this.userInfo.newPassword)
+                {
+                     alert('新密码与原密码一样');
+                     return;
+                }
                 if(this.isSame) {
                     utils.request({
                         invoke: utils.api.updatePassword,

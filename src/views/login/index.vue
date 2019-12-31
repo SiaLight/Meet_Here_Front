@@ -3,7 +3,7 @@
     <div class="LoginBoard">
            <div class="inputDiv">
                <el-row :gutter="10">
-                   <el-col :span="8">
+                   <el-col :span="11">
                        <span>名称</span>
                    </el-col>
                    <el-col :span="8">
@@ -13,12 +13,22 @@
                    </el-col>
                </el-row>
                <el-row :gutter="10" style="margin-top: 10px">
-                   <el-col :span="8">
+                   <el-col :span="11">
                        <span>密码</span>
                    </el-col>
                    <el-col :span="8">
                        <div class="inputBorder">
                        <input type="password" v-model="password"></input>
+                       </div>
+                   </el-col>
+               </el-row>
+                <el-row :gutter="10" style="margin-top: 10px" v-if="ifShow">
+                   <el-col :span="11">
+                       <span>确认密码</span>
+                   </el-col>
+                   <el-col :span="8">
+                       <div class="inputBorder">
+                       <input type="password" v-model="confirmPassword"></input>
                        </div>
                    </el-col>
                </el-row>
@@ -42,7 +52,10 @@
         data: () => ({
             userName:'',
             password:'',
-            telephone:'15317872182'
+            telephone:'15317872182',
+            confirmPassword:'',
+            ifShow:false,
+            clickRegister:0
         }),
       methods:{
            loginHandle () {
@@ -79,6 +92,21 @@
 
           },
           registerHandle(){
+              if(!this.clickRegister)
+              {this.ifShow= true;
+                this.clickRegister++;
+              }
+              else{
+              if(this.password==''||this.userName==''||this.confirmPassword=='')
+              alert("请输入名称或密码。");
+              else if(this.password!=this.confirmPassword)
+              alert("两次输入密码不一致。")
+              else
+              this.register();
+              }
+
+          },
+          register(){
               utils.request({
                   invoke: utils.api.register,
                   params:{
@@ -90,13 +118,19 @@
                   console.log("进入注册");
                   console.log(res);
                   if(res.code === 200){
-                      alert("注册成功");}
+                      alert("注册成功");
+                       this.ifShow =false;                     
+                      }
                   else{
                       alert(res.message);
                   }
                 
               })
           }
+      },
+      mounted(){
+          this.ifShow =false;
+            this.clickRegister=0;
       }
     }
 </script>
