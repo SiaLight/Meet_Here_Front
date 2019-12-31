@@ -25,7 +25,8 @@
                             type="date"
                             placeholder="选择日期"
                             value-format="yyyy-MM-dd"
-                            style="margin-top: 5px" @change="dateChange">
+                            style="margin-top: 5px" @change="dateChange"
+                             :picker-options="pickerOptions1">
                     </el-date-picker>
                     <el-time-select
                             placeholder="起始时间"
@@ -85,7 +86,12 @@
                     startTime:'',
                     endTime:''
                 },
-                comment:[]
+                comment:[],
+                pickerOptions1: {
+           disabledDate(time) {
+            return time.getTime() < Date.now() - 8.64e7;
+          },
+        }        
             }
         },
         components:{commentUnit},
@@ -121,9 +127,13 @@
                  }
              }).then(res =>{
                  console.log(res);
-                 this.$message.success('预约成功');
+                 if(res.code === 200)              
+                alert('预约成功');
+                else{
+                    alert(res.message);
+                }
              }).catch(res =>{
-                 this.$message.error('预约失败');
+                 alert('预约失败');
              })
          },
          dateChange(e){

@@ -8,7 +8,7 @@
                 <el-aside id="aside">
                     <el-row :gutter="12" class="user">
                         <el-col :span="4"  :offset="2"> <el-avatar icon="el-icon-user-solid"></el-avatar></el-col>
-                        <el-col :span="6"><P>{{userName}}</P></el-col>
+                        <el-col :span="6" id="username" ><P>{{userName}}</P></el-col>
                     </el-row>
                     <el-divider class="divider"></el-divider>
                     <el-menu  router default-active="/index/homePage" style="width: 100%">

@@ -19,6 +19,7 @@ export default new Router({
             path: "/index/",
             name: "index",
             component: Index,
+            meta:{title:'meetHere'},
             children:[
                 {
                     path: 'homePage/',

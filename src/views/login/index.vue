@@ -72,7 +72,7 @@
                            this.$router.push({name:'AdminIndex'});
                    }
                    else{
-                        this.$message(res.message);
+                        alert(res.message);
                    }
                });
 
@@ -89,12 +89,12 @@
               }).then(res =>{
                   console.log("进入注册");
                   console.log(res);
-                  if(res.code === 102 || res.code === 104 ){
-                      this.$message(res.message);
+                  if(res.code === 200){
+                      alert("注册成功");}
+                  else{
+                      alert(res.message);
                   }
-                  else if(res.code === 200){
-                      this.$message.success('注册成功');
-                  }
+                
               })
           }
       }
