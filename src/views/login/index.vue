@@ -53,7 +53,6 @@
         data: () => ({
             userName:'',
             password:'',
-            telephone:'15317872182',
             confirmPassword:'',
             ifShow:false,
             clickRegister:0
@@ -113,7 +112,6 @@
                   params:{
                       username: this.userName,
                       password: this.password,
-                      telephone:this.telephone,
                   }
               }).then(res =>{
                   console.log("进入注册");
