@@ -4,18 +4,15 @@
            <div class="detail">
                <p class="time">{{item.createTime}}</p>
            </div>
-           <div>
            <el-row>
                <el-col :span="20">
                    <div class="detail">
                    <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-                          <p class="name">{{item.reviewer.username}}:</p>
+                          <p class="name">{{item.reviewer.username}}:</p> -->
                    <P style="margin-left: 5px">{{item.content}}</P>
                    </div>
                </el-col>
            </el-row>
-       </div>
-
        </div>
         <div class="inputBox">
              <el-button type="text" class="but" @click="more">加载更多评论...</el-button>
@@ -28,6 +25,7 @@
             <el-button type="danger" class="but" @click="publish">提交评论</el-button>
         </div>
     </div>
+
 </template>
 <script>
     import  utils from '../utils'
@@ -79,6 +77,8 @@
             more(){
                 this.commentS = this.comment.slice(0,2*this.num);
                 this.num++;
+                console.log("新评论");
+                console.log(this.commentS);
 
             }
         }
