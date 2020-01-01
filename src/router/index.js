@@ -71,6 +71,7 @@ export default new Router({
         {
             path: "/AdminIndex/",
             name: "AdminIndex",
+            meta:{title:'meetHere'},
             component: () => import( '../views/Aindex'),
             children:[
                 {

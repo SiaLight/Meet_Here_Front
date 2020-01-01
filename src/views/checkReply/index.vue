@@ -43,15 +43,13 @@
                             @click="handleCheck(scope.$index,scope.row)"
                             size="small"
                             type="primary"
-                            icon="edit">
-                        <span >发布</span>
+                            icon="edit">发布
                     </el-button>
                     <el-button
-                            @click="handleUnCheck(scope.row)"
+                            @click="handleUnCheck(scope.$index,scope.row)"
                             size="small"
                             type="danger"
-                            icon="delete">
-                        <span>忽略</span>
+                            icon="delete">忽略
                     </el-button>
                 </span>
             </template>
@@ -72,6 +70,8 @@
 </template>
 
 <script>
+    import  utils from '../../utils'
+
     export default {
         data() {
             return {

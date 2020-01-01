@@ -5,7 +5,7 @@
             <el-input
                     v-model="search"
                     style="display: inline-block;width:100%"
-                    placeholder="请根据场馆/场地/租金/开始日期关键字搜索相关订单">
+                    placeholder="请根据用户/场馆/场地/租金/开始日期关键字搜索相关订单">
             </el-input>
         </div>
         <!--表格-->
@@ -115,7 +115,7 @@
                         console.log(res);
                         this.order = res.data;
                         this.totalNum = res.total;
-                        for(let i=0;i<this.tables.length;i++){
+                        for(let i=0;i<this.order.length;i++){
                             this.order[i].startTime=this.order[i].startTime.replace("T"," ");
                             this.order[i].endTime=this.order[i].endTime.replace("T"," ");
                         }

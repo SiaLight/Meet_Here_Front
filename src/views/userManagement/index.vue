@@ -129,11 +129,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: '升级成功',
-                    });
-                    row.type = 'success'
+                    row.type = 'success';
                     utils.request({
                         invoke: utils.api.changePermission,
                         params:{
@@ -142,11 +138,16 @@
                         }
                     }).then(res=>{
                         console.log(res);
+                        this.$message({
+                            type: 'success',
+                            message: '升级成功',
+                        });
+                        this.loadData(this.currentPage);
                     })
                 }).catch(() => {
                     this.$message({
                         type: 'error',
-                        message: "取消修改"
+                        message: "升级失败"
                     })
                 })
 

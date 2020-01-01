@@ -170,12 +170,13 @@
                 </el-form-item>
             </el-form>
             <div>
-                <el-button @click="cancel()">取消</el-button>
+                <el-button type="mini"
+                           @click="cancel()">取消
+                </el-button>
                 <el-button
-                        type="primary"
-                        @click="submitAddRow()"
-                        :loading="addLoading"
-                >确定</el-button>
+                        type="mini"
+                        @click="submitAddRow()">确定
+                </el-button>
             </div>
         </el-dialog>
     </div>
@@ -185,14 +186,13 @@
     import  utils from '../../utils'
 
     let _index; //定义一个全局变量，以获取行数据的行号
-    let tempId;//定义一个全局变量，以获取行数据的id
 
     export default {
         data() {
             return {
                 //分页参数
                 totalNum: 0,
-                pageSize: 8,
+                pageSize: 10,
                 currentPage:1,
                 pictLoading:true,
 
@@ -236,7 +236,7 @@
                     console.log(res);
                     this.newsData = res.data;
                     this.totalNum = res.total;
-                    for(let i=0;i<this.tables.length;i++){
+                    for(let i=0;i<this.newsData.length;i++){
                         this.newsData[i].createTime=this.newsData[i].createTime.replace("T"," ");
                     }
                 })
@@ -252,11 +252,10 @@
             //保存编辑
             submitEditRow() {
                 let editData = _index;
-                if(this.editForm.author===''||this.editForm.title===''||this.editForm.content===''){
+                if(this.editForm.title===''||this.editForm.content===''){
                     this.$message.error('修改后的内容每一项都不准为空')
                 }
                 else{
-                this.newsData[editData].author = this.editForm.author;
                 this.newsData[editData].title = this.editForm.title;
                 this.newsData[editData].content = this.editForm.content;
                 utils.request({
@@ -271,7 +270,7 @@
                     this.$message.success('新闻修改成功');
                     this.editFormVisible = false;
                     console.log(_index);
-                    this.loadData();
+                    this.loadData(this.currentPage);
                 }).catch(res=>{
                     this.$message.error('新闻修改失败');
                 })
@@ -296,7 +295,6 @@
                     this.newsData.push({
                         title: this.addForm.title,
                         content: this.addForm.content,
-                        date: this.addForm.date,
                  });
                     utils.request({
                         invoke: utils.api.publishNews,
