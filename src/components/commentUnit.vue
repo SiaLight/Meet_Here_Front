@@ -47,12 +47,12 @@
         methods:{
              checkLogin(){
                  if(this.conmentDetail == ''){
-                     this.$message('请输入评论内容。');
+                     alert('请输入评论内容。');
                      return false;
                  }
             if(!this.$store.state.loginState)
             {
-               this.$message.error('请先登录。');
+               alert('请先登录。');
                 return false;
             }
             return true;
@@ -69,9 +69,9 @@
                     }
                 }).then(res =>{
                     console.log(res);
-                    this.$message.success('评论成功');
+                    alert('评论成功');
                 }).catch(res =>{
-                    this.$message.error('评论失败');
+                    alert('评论失败');
                 })
             },
             more(){
