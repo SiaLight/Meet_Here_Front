@@ -29,6 +29,7 @@
                              :picker-options="pickerOptions1">
                     </el-date-picker>
                     <el-time-select
+                            id="startTime"
                             placeholder="起始时间"
                             style="margin-top: 5px"
                             v-model="time.startTime"
@@ -37,6 +38,7 @@
                             :picker-options="{start: '08:30',step: '00:30',end: '18:30' }">
                     </el-time-select>
                     <el-time-select
+                            id="endTime"
                             placeholder="结束时间"
                             style="margin-top: 5px"
                             v-model="time.endTime"
@@ -101,12 +103,12 @@
          },
          checkEmpty(){
             if(this.order.startTime ==''||this.order.endTime==''){
-               this.$message('请选择相关信息。');
+               alert('请选择相关信息。');
                return false;
             }
-            if(!this.$store.state.loginState)
+           else  if(!this.$store.state.loginState)
             {
-               this.$message.error('请先登录。');
+               alert('请先登录。');
                 return false;
             }
             return true;

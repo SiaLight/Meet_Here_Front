@@ -14,22 +14,27 @@
                     <el-row :gutter="20">
                             <el-col :span="8">
                                 <el-form-item label="开始日期">
+                                    <div id="start">                                     
                                     <el-date-picker
+                                            id="start"
                                             v-model="props.row.startTime"
                                             type="datetime"
                                             value-format="yyyy-MM-dd HH:mm:ss"
                                             placeholder="选择日期时间">
                                     </el-date-picker>
+                                    </div>
                                 </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="结束日期">
+                                <div id="finishTime">
                                 <el-date-picker
                                         v-model="props.row.endTime"
                                         type="datetime"
                                         value-format="yyyy-MM-dd HH:mm:ss"
                                         placeholder="选择日期时间">
                                 </el-date-picker>
+                                </div>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -145,9 +150,13 @@
                         endTime: row.endTime
                     }
                 }).then(res =>{
-                    this.$message.success('修改成功');
+                    if(res.code===200)
+                    alert('修改成功');
+                    else{
+                         alert(res.message);
+                    }
                 }).catch(res=>{
-                    this.$message.error('修改失败');
+                    alert('修改失败');
                 })
             },
             handleCancel(index,row){
@@ -158,8 +167,8 @@
                     }
                 }).then(res =>{
                     this.oldOrder = res.data;
-                     this.tableData[index].startTime = this.oldOrder.startTime;
-                this.tableData[index].endTime = this.oldOrder.endTime;
+                     this.tableData[index].startTime = this.oldOrder.startTime.replace("T"," ");
+                this.tableData[index].endTime = this.oldOrder.endTime.replace("T"," ");
                 })
             },
             handleCurrentChange(index){
@@ -181,10 +190,10 @@
                     }
                 }).then(res =>{
                     console.log(res);
-                    this.$message.success('取消成功');
+                    alert('取消成功');
 
                 }).catch(res=>{
-                    this.$message.error('取消失败');
+                   alert('取消失败');
                 })
             },
             handleSelect(e){
